@@ -280,7 +280,8 @@ exports.Prisma.ProductCategoryScalarFieldEnum = {
 exports.Prisma.CanteenScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  image_url: 'image_url'
+  image_url: 'image_url',
+  slug: 'slug'
 };
 
 exports.Prisma.CanteenMapScalarFieldEnum = {

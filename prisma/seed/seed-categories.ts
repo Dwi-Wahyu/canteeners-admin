@@ -9,18 +9,15 @@ export async function seedCategories() {
     const categories = [
       {
         name: "Es Buah",
-        image_url:
-          "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/categories/es-buah.jpg",
+        image_url: "categories/es-buah.jpg",
       },
       {
         name: "Ayam Geprek",
-        image_url:
-          "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/categories/ayam-geprek.jpg",
+        image_url: "categories/ayam-geprek.jpg",
       },
       {
         name: "Gorengan",
-        image_url:
-          "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/categories/gorengan.jpg",
+        image_url: "categories/gorengan.jpg",
       },
     ];
 

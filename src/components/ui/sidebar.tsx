@@ -3,7 +3,14 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
-import { ChevronLeft, Maximize, Menu, Minimize } from "lucide-react";
+import {
+  ChevronLeft,
+  Ellipsis,
+  EllipsisVertical,
+  Maximize,
+  Menu,
+  Minimize,
+} from "lucide-react";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -281,14 +288,14 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="outline"
       size="icon"
-      className={cn("bg-sidebar rounded-full hover:bg-background", className)}
+      className={cn("bg-sidebar border-0 shadow-none", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
       {...props}
     >
-      {open ? <Minimize /> : <Maximize />}
+      {open ? <EllipsisVertical /> : <Ellipsis />}
 
       <span className="sr-only">Toggle Sidebar</span>
     </Button>

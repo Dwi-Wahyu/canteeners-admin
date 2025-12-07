@@ -9,10 +9,11 @@ datasource db {
 }
 
 model Canteen {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   name      String
   image_url String
   shops     Shop[]
+  slug      String? @unique
 
   maps    CanteenMap[]
   qrcodes TableQRCode[]

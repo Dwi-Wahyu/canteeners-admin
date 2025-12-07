@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getShopOwners, getUsers } from "./user-queries";
 
 export const CreateUserSchema = z.object({
   username: z.string().min(1, "Tolong isi username"),
@@ -27,3 +28,8 @@ export const UpdateUserSchema = z.object({
 });
 
 export type UpdateUserInput = z.infer<typeof UpdateUserSchema>;
+
+// queries return type
+
+export type GetUsers = Awaited<ReturnType<typeof getUsers>>;
+export type GetShopOwners = Awaited<ReturnType<typeof getShopOwners>>;

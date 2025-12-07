@@ -4,6 +4,10 @@ import { seedCategories } from "./seed-categories";
 import { prisma } from "@/lib/prisma";
 
 async function main() {
+  await prisma.user.deleteMany();
+  await prisma.canteen.deleteMany();
+  await prisma.category.deleteMany();
+
   await seedCanteens();
   await seedCategories();
   await seedUsers();

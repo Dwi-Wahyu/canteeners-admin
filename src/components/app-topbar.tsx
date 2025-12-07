@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CircleUser, Key, LogOut } from "lucide-react";
 import Link from "next/link";
+import { getImageUrl } from "@/helper/get-image-url";
 
 export default function AppTopbar() {
   const session = useSession();
@@ -29,21 +30,41 @@ export default function AppTopbar() {
   }
 
   return (
-    <div className="justify-between flex mb-3 items-center">
-      <div></div>
+    <div className="justify-between bg-sidebar shadow flex p-4 mb-4 items-center">
+      <div>
+        <SidebarTrigger />
+      </div>
+
       <div className="flex gap-3 items-center">
         <DropdownMenu>
           <DropdownMenuTrigger className="flex gap-2 items-center">
-            <h1 className="font-semibold hidden md:block text-sm">
-              {session.data.user.name}
-            </h1>
-            <Avatar className="size-8">
-              <AvatarImage
-                src={`/uploads/avatar/${session.data.user.avatar}`}
-                alt={session.data.user.name}
-              />
-              <AvatarFallback className="text-xs">HR</AvatarFallback>
-            </Avatar>
+            {session.data.user ? (
+              <>
+                <h1 className="font-semibold hidden md:block text-sm">
+                  {session.data.user.name}
+                </h1>
+                <Avatar className="size-8">
+                  <AvatarImage
+                    src={session.data.user.avatar}
+                    alt={session.data.user.name}
+                  />
+                  <AvatarFallback className="text-xs">HR</AvatarFallback>
+                </Avatar>
+              </>
+            ) : (
+              <>
+                <h1 className="font-semibold hidden md:block text-sm">
+                  Administrator
+                </h1>
+                <Avatar className="size-8">
+                  <AvatarImage
+                    src={"avatars/default-avatar.jpg"}
+                    alt={"Administrator"}
+                  />
+                  <AvatarFallback className="text-xs">HR</AvatarFallback>
+                </Avatar>
+              </>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem asChild>
@@ -65,8 +86,6 @@ export default function AppTopbar() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
-        <SidebarTrigger />
       </div>
     </div>
   );

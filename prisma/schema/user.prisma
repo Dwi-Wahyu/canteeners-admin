@@ -6,7 +6,7 @@ model User {
     name     String
     username String? @unique
     password String?
-    avatar   String  @default("default-avatar.jpg")
+    avatar   String  @default("avatars/default-avatar.jpg")
 
     messages      Message[]
     quick_chats   QuickChat[]
@@ -34,7 +34,7 @@ enum Role {
 model Admin {
     id String @id @default(uuid())
 
-    user    User   @relation(fields: [user_id], references: [id])
+    user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
     user_id String @unique
 
     @@map("admins")
@@ -45,7 +45,7 @@ model Owner {
 
     shop Shop?
 
-    user    User   @relation(fields: [user_id], references: [id])
+    user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
     user_id String @unique
 
     updated_at DateTime @updatedAt
@@ -56,7 +56,7 @@ model Owner {
 model Customer {
     id String @id @default(uuid())
 
-    user    User   @relation(fields: [user_id], references: [id])
+    user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
     user_id String @unique
 
     email        String?

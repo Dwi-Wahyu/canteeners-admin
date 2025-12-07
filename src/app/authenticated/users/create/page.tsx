@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import {
   CreateUserInput,
   CreateUserSchema,
-} from "@/features/users/lib/user-type";
+} from "@/features/users/lib/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useState } from "react";
@@ -27,6 +27,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Role } from "@/app/generated/prisma";
+import { createUser } from "@/features/users/lib/user-action";
+import { toast } from "sonner";
+import { userRoleMapping } from "@/features/users/constants";
 
 export default function CreateUserPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,16 +37,27 @@ export default function CreateUserPage() {
   const form = useForm<CreateUserInput>({
     resolver: zodResolver(CreateUserSchema),
     defaultValues: {
+      name: "",
       username: "",
       password: "",
-      role: "CUSTOMER",
-      avatar:
-        "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/avatars/default-avatar.jpg",
+      role: "SHOP_OWNER",
+      avatar: "avatars/default-avatar.jpg",
     },
   });
 
   async function onSubmit(data: CreateUserInput) {
     setIsLoading(true);
+
+    const result = await createUser(data);
+
+    if (result.success) {
+      toast.success("Berhasil tambahkan user");
+      form.reset();
+    } else {
+      toast.error("Gagal tambahkan user", {
+        description: "Terjadi kesalahan",
+      });
+    }
 
     setIsLoading(false);
   }
@@ -60,6 +74,26 @@ export default function CreateUserPage() {
           className="flex flex-col gap-4"
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          <Controller
+            name="name"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="name">Nama</FieldLabel>
+                <Input
+                  {...field}
+                  id="name"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="off"
+                />
+
+                {fieldState.error?.message && (
+                  <FieldError>{fieldState.error?.message}</FieldError>
+                )}
+              </Field>
+            )}
+          />
+
           <Controller
             name="username"
             control={form.control}
@@ -107,14 +141,17 @@ export default function CreateUserPage() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="role">Role</FieldLabel>
 
-                <Select>
+                <Select
+                  defaultValue={field.value}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Role" />
                   </SelectTrigger>
                   <SelectContent id="role">
                     {Object.values(Role).map((role) => (
                       <SelectItem key={role} value={role}>
-                        {role}
+                        {userRoleMapping[role]}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -140,7 +177,7 @@ export default function CreateUserPage() {
               <Loader className="animate-spin" /> Loading
             </>
           ) : (
-            <>Login</>
+            <>Simpan</>
           )}
         </Button>
       </CardFooter>

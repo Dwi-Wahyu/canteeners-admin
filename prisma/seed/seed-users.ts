@@ -7,8 +7,7 @@ config();
 
 const prisma = new PrismaClient();
 
-const DEFAULT_AVATAR =
-  "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/avatars/default-avatar.jpg";
+const DEFAULT_AVATAR = "avatars/default-avatar.jpg";
 
 export async function seedUsers() {
   console.log("Memulai seeding users...");

@@ -18,11 +18,9 @@ export default function AdminLayout({
     >
       <AppSidebar />
       <main className="w-full">
-        <div className="p-5 pl-4">
-          <AppTopbar />
+        <AppTopbar />
 
-          {children}
-        </div>
+        <div className="p-5 pt-1 pl-4">{children}</div>
       </main>
     </SidebarProvider>
   );

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@/app/generated/prisma";
+import { generateCategorySlug } from "@/helper/generate-category-slug";
 
 const prisma = new PrismaClient();
 
@@ -9,18 +10,18 @@ export async function seedCanteens() {
       data: [
         {
           name: "Kantin Kudapan",
-          image_url:
-            "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/canteens/kudapan.webp",
+          image_url: "canteens/kudapan.webp",
+          slug: generateCategorySlug("Kantin Kudapan"),
         },
         {
           name: "Kantin Sastra",
-          image_url:
-            "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/canteens/kansas.jpeg",
+          image_url: "canteens/kansas.jpeg",
+          slug: generateCategorySlug("Kantin Sastra"),
         },
         {
           name: "Kantin Sosiologi",
-          image_url:
-            "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/canteens/kansos.webp",
+          image_url: "canteens/kansos.webp",
+          slug: generateCategorySlug("Kantin Sosiologi"),
         },
       ],
     });

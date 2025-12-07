@@ -22834,18 +22834,21 @@ export namespace Prisma {
     id: number | null
     name: string | null
     image_url: string | null
+    slug: string | null
   }
 
   export type CanteenMaxAggregateOutputType = {
     id: number | null
     name: string | null
     image_url: string | null
+    slug: string | null
   }
 
   export type CanteenCountAggregateOutputType = {
     id: number
     name: number
     image_url: number
+    slug: number
     _all: number
   }
 
@@ -22862,18 +22865,21 @@ export namespace Prisma {
     id?: true
     name?: true
     image_url?: true
+    slug?: true
   }
 
   export type CanteenMaxAggregateInputType = {
     id?: true
     name?: true
     image_url?: true
+    slug?: true
   }
 
   export type CanteenCountAggregateInputType = {
     id?: true
     name?: true
     image_url?: true
+    slug?: true
     _all?: true
   }
 
@@ -22967,6 +22973,7 @@ export namespace Prisma {
     id: number
     name: string
     image_url: string
+    slug: string | null
     _count: CanteenCountAggregateOutputType | null
     _avg: CanteenAvgAggregateOutputType | null
     _sum: CanteenSumAggregateOutputType | null
@@ -22992,6 +22999,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     image_url?: boolean
+    slug?: boolean
     shops?: boolean | Canteen$shopsArgs<ExtArgs>
     maps?: boolean | Canteen$mapsArgs<ExtArgs>
     qrcodes?: boolean | Canteen$qrcodesArgs<ExtArgs>
@@ -23002,21 +23010,24 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     image_url?: boolean
+    slug?: boolean
   }, ExtArgs["result"]["canteen"]>
 
   export type CanteenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     image_url?: boolean
+    slug?: boolean
   }, ExtArgs["result"]["canteen"]>
 
   export type CanteenSelectScalar = {
     id?: boolean
     name?: boolean
     image_url?: boolean
+    slug?: boolean
   }
 
-  export type CanteenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image_url", ExtArgs["result"]["canteen"]>
+  export type CanteenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image_url" | "slug", ExtArgs["result"]["canteen"]>
   export type CanteenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     shops?: boolean | Canteen$shopsArgs<ExtArgs>
     maps?: boolean | Canteen$mapsArgs<ExtArgs>
@@ -23037,6 +23048,7 @@ export namespace Prisma {
       id: number
       name: string
       image_url: string
+      slug: string | null
     }, ExtArgs["result"]["canteen"]>
     composites: {}
   }
@@ -23466,6 +23478,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Canteen", 'Int'>
     readonly name: FieldRef<"Canteen", 'String'>
     readonly image_url: FieldRef<"Canteen", 'String'>
+    readonly slug: FieldRef<"Canteen", 'String'>
   }
     
 
@@ -39981,7 +39994,8 @@ export namespace Prisma {
   export const CanteenScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    image_url: 'image_url'
+    image_url: 'image_url',
+    slug: 'slug'
   };
 
   export type CanteenScalarFieldEnum = (typeof CanteenScalarFieldEnum)[keyof typeof CanteenScalarFieldEnum]
@@ -41643,6 +41657,7 @@ export namespace Prisma {
     id?: IntFilter<"Canteen"> | number
     name?: StringFilter<"Canteen"> | string
     image_url?: StringFilter<"Canteen"> | string
+    slug?: StringNullableFilter<"Canteen"> | string | null
     shops?: ShopListRelationFilter
     maps?: CanteenMapListRelationFilter
     qrcodes?: TableQRCodeListRelationFilter
@@ -41652,6 +41667,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     image_url?: SortOrder
+    slug?: SortOrderInput | SortOrder
     shops?: ShopOrderByRelationAggregateInput
     maps?: CanteenMapOrderByRelationAggregateInput
     qrcodes?: TableQRCodeOrderByRelationAggregateInput
@@ -41659,6 +41675,7 @@ export namespace Prisma {
 
   export type CanteenWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    slug?: string
     AND?: CanteenWhereInput | CanteenWhereInput[]
     OR?: CanteenWhereInput[]
     NOT?: CanteenWhereInput | CanteenWhereInput[]
@@ -41667,12 +41684,13 @@ export namespace Prisma {
     shops?: ShopListRelationFilter
     maps?: CanteenMapListRelationFilter
     qrcodes?: TableQRCodeListRelationFilter
-  }, "id">
+  }, "id" | "slug">
 
   export type CanteenOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     image_url?: SortOrder
+    slug?: SortOrderInput | SortOrder
     _count?: CanteenCountOrderByAggregateInput
     _avg?: CanteenAvgOrderByAggregateInput
     _max?: CanteenMaxOrderByAggregateInput
@@ -41687,6 +41705,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Canteen"> | number
     name?: StringWithAggregatesFilter<"Canteen"> | string
     image_url?: StringWithAggregatesFilter<"Canteen"> | string
+    slug?: StringNullableWithAggregatesFilter<"Canteen"> | string | null
   }
 
   export type CanteenMapWhereInput = {
@@ -43787,6 +43806,7 @@ export namespace Prisma {
   export type CanteenCreateInput = {
     name: string
     image_url: string
+    slug?: string | null
     shops?: ShopCreateNestedManyWithoutCanteenInput
     maps?: CanteenMapCreateNestedManyWithoutCanteenInput
     qrcodes?: TableQRCodeCreateNestedManyWithoutCanteenInput
@@ -43796,6 +43816,7 @@ export namespace Prisma {
     id?: number
     name: string
     image_url: string
+    slug?: string | null
     shops?: ShopUncheckedCreateNestedManyWithoutCanteenInput
     maps?: CanteenMapUncheckedCreateNestedManyWithoutCanteenInput
     qrcodes?: TableQRCodeUncheckedCreateNestedManyWithoutCanteenInput
@@ -43804,6 +43825,7 @@ export namespace Prisma {
   export type CanteenUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     shops?: ShopUpdateManyWithoutCanteenNestedInput
     maps?: CanteenMapUpdateManyWithoutCanteenNestedInput
     qrcodes?: TableQRCodeUpdateManyWithoutCanteenNestedInput
@@ -43813,6 +43835,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     shops?: ShopUncheckedUpdateManyWithoutCanteenNestedInput
     maps?: CanteenMapUncheckedUpdateManyWithoutCanteenNestedInput
     qrcodes?: TableQRCodeUncheckedUpdateManyWithoutCanteenNestedInput
@@ -43822,17 +43845,20 @@ export namespace Prisma {
     id?: number
     name: string
     image_url: string
+    slug?: string | null
   }
 
   export type CanteenUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CanteenUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CanteenMapCreateInput = {
@@ -46043,6 +46069,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     image_url?: SortOrder
+    slug?: SortOrder
   }
 
   export type CanteenAvgOrderByAggregateInput = {
@@ -46053,12 +46080,14 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     image_url?: SortOrder
+    slug?: SortOrder
   }
 
   export type CanteenMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     image_url?: SortOrder
+    slug?: SortOrder
   }
 
   export type CanteenSumOrderByAggregateInput = {
@@ -52696,6 +52725,7 @@ export namespace Prisma {
   export type CanteenCreateWithoutMapsInput = {
     name: string
     image_url: string
+    slug?: string | null
     shops?: ShopCreateNestedManyWithoutCanteenInput
     qrcodes?: TableQRCodeCreateNestedManyWithoutCanteenInput
   }
@@ -52704,6 +52734,7 @@ export namespace Prisma {
     id?: number
     name: string
     image_url: string
+    slug?: string | null
     shops?: ShopUncheckedCreateNestedManyWithoutCanteenInput
     qrcodes?: TableQRCodeUncheckedCreateNestedManyWithoutCanteenInput
   }
@@ -52753,6 +52784,7 @@ export namespace Prisma {
   export type CanteenUpdateWithoutMapsInput = {
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     shops?: ShopUpdateManyWithoutCanteenNestedInput
     qrcodes?: TableQRCodeUpdateManyWithoutCanteenNestedInput
   }
@@ -52761,6 +52793,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     shops?: ShopUncheckedUpdateManyWithoutCanteenNestedInput
     qrcodes?: TableQRCodeUncheckedUpdateManyWithoutCanteenNestedInput
   }
@@ -52784,6 +52817,7 @@ export namespace Prisma {
   export type CanteenCreateWithoutQrcodesInput = {
     name: string
     image_url: string
+    slug?: string | null
     shops?: ShopCreateNestedManyWithoutCanteenInput
     maps?: CanteenMapCreateNestedManyWithoutCanteenInput
   }
@@ -52792,6 +52826,7 @@ export namespace Prisma {
     id?: number
     name: string
     image_url: string
+    slug?: string | null
     shops?: ShopUncheckedCreateNestedManyWithoutCanteenInput
     maps?: CanteenMapUncheckedCreateNestedManyWithoutCanteenInput
   }
@@ -52833,6 +52868,7 @@ export namespace Prisma {
   export type CanteenUpdateWithoutQrcodesInput = {
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     shops?: ShopUpdateManyWithoutCanteenNestedInput
     maps?: CanteenMapUpdateManyWithoutCanteenNestedInput
   }
@@ -52841,6 +52877,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     shops?: ShopUncheckedUpdateManyWithoutCanteenNestedInput
     maps?: CanteenMapUncheckedUpdateManyWithoutCanteenNestedInput
   }
@@ -52872,6 +52909,7 @@ export namespace Prisma {
   export type CanteenCreateWithoutShopsInput = {
     name: string
     image_url: string
+    slug?: string | null
     maps?: CanteenMapCreateNestedManyWithoutCanteenInput
     qrcodes?: TableQRCodeCreateNestedManyWithoutCanteenInput
   }
@@ -52880,6 +52918,7 @@ export namespace Prisma {
     id?: number
     name: string
     image_url: string
+    slug?: string | null
     maps?: CanteenMapUncheckedCreateNestedManyWithoutCanteenInput
     qrcodes?: TableQRCodeUncheckedCreateNestedManyWithoutCanteenInput
   }
@@ -53122,6 +53161,7 @@ export namespace Prisma {
   export type CanteenUpdateWithoutShopsInput = {
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     maps?: CanteenMapUpdateManyWithoutCanteenNestedInput
     qrcodes?: TableQRCodeUpdateManyWithoutCanteenNestedInput
   }
@@ -53130,6 +53170,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     image_url?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     maps?: CanteenMapUncheckedUpdateManyWithoutCanteenNestedInput
     qrcodes?: TableQRCodeUncheckedUpdateManyWithoutCanteenNestedInput
   }

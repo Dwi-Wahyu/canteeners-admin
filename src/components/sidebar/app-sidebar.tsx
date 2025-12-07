@@ -6,7 +6,6 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
@@ -14,12 +13,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   BookUser,
   Building,
-  ChartArea,
   ContactRound,
   DollarSign,
   Truck,
   UserPlus,
-  UtensilsCrossed,
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -49,16 +46,6 @@ export const adminMenu = {
       url: "/authenticated/kategori",
       icon: Tags,
     },
-    {
-      title: "Riwayat Transaksi",
-      url: "/authenticated/transaksi",
-      icon: DollarSign,
-    },
-    {
-      title: "Support",
-      url: "/authenticated/support",
-      icon: ChartArea,
-    },
   ],
   navUser: [
     {
@@ -66,11 +53,11 @@ export const adminMenu = {
       url: "/authenticated/users/create",
       icon: UserPlus,
     },
-    {
-      title: "Kurir",
-      url: "/authenticated/users/kurir",
-      icon: Truck,
-    },
+    // {
+    //   title: "Kurir",
+    //   url: "/authenticated/users/kurir",
+    //   icon: Truck,
+    // },
     {
       title: "Pemilik Kedai",
       url: "/authenticated/users/pemilik-kedai",
@@ -108,12 +95,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar collapsible="icon" variant="floating" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="p-2 pb-0">
-            <h1 className="text-lg font-bold leading-tight">CANTEENERS</h1>
-            <h1 className="text-sm text-muted-foreground">Kantin Naik Level</h1>
+            {open && (
+              <div>
+                <h1 className="text-lg font-bold leading-tight">CANTEENERS</h1>
+                <h1 className="text-sm text-muted-foreground">
+                  Kantin Naik Level
+                </h1>
+              </div>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -131,26 +124,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 function LoadingSidebarMenu({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const { open } = useSidebar();
+
   return (
-    <Sidebar collapsible="icon" variant="floating" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="p-2 pb-0 flex items-center justify-between">
-            <div className="flex gap-2 items-center">
-              <Image
-                src={"/app-logo.svg"}
-                width={36}
-                height={36}
-                alt="app logo"
-              />
-
+          <SidebarMenuItem className="p-2 pb-0">
+            {open && (
               <div>
                 <h1 className="text-lg font-bold leading-tight">CANTEENERS</h1>
                 <h1 className="text-sm text-muted-foreground">
                   Kantin Naik Level
                 </h1>
               </div>
-            </div>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
