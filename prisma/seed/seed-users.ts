@@ -1,11 +1,10 @@
 import bcrypt from "bcryptjs";
-import { PrismaClient, Role } from "@/app/generated/prisma";
+import { Role } from "@/app/generated/prisma";
 
 import { config } from "dotenv";
+import { prisma } from "@/lib/prisma";
 
 config();
-
-const prisma = new PrismaClient();
 
 const DEFAULT_AVATAR = "avatars/default-avatar.jpg";
 

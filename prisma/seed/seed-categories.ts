@@ -1,7 +1,5 @@
-import { PrismaClient } from "@/app/generated/prisma";
 import { generateCategorySlug } from "@/helper/generate-category-slug";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function seedCategories() {
   console.log("Memulai seeding kategori...");

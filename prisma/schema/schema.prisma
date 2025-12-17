@@ -1,11 +1,10 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../src/app/generated/prisma"
+  output   = "../../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Canteen {
