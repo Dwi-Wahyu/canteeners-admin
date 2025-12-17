@@ -1,14 +1,14 @@
 model CustomerViolation {
-    id          Int                   @id @default(autoincrement())
-    timestamp   DateTime
-    type        CustomerViolationType
-    customer    Customer?             @relation(fields: [customer_id], references: [id])
-    customer_id String?
-    order_id    String?
+  id          Int                   @id @default(autoincrement())
+  timestamp   DateTime
+  type        CustomerViolationType
+  customer_id String?
+  order_id    String?
+  customer    Customer?             @relation(fields: [customer_id], references: [id])
 
-    @@map("customer_violations")
+  @@map("customer_violations")
 }
 
 enum CustomerViolationType {
-    ORDER_CANCEL_WITHOUT_PAY
+  ORDER_CANCEL_WITHOUT_PAY
 }

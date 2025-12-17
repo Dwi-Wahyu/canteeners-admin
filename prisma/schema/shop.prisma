@@ -1,123 +1,107 @@
 model Shop {
-    id          String  @id @default(uuid())
-    name        String
-    description String?
-    image_url   String
-    canteen     Canteen @relation(fields: [canteen_id], references: [id])
-    canteen_id  Int
+  id                       String                 @id @default(uuid())
+  name                     String
+  description              String?
+  image_url                String
+  canteen_id               Int
+  status                   ShopStatus             @default(ACTIVE)
+  suspended_reason         String?
+  open_time                DateTime?
+  close_time               DateTime?
+  owner_id                 String                 @unique
+  order_mode               ShopOrderMode          @default(READY_ONLY)
+  refund_disbursement_mode RefundDisbursementMode @default(CASH)
+  qrcode_url               String?
+  minimum_price            Int?
+  maximum_price            Int?
+  average_rating           Float                  @default(0)
+  total_ratings            Int                    @default(0)
+  orders                   Order[]
+  payments                 Payment[]
+  products                 Product[]
+  billings                 ShopBilling[]
+  shop_carts               ShopCart[]
+  canteen                  Canteen                @relation(fields: [canteen_id], references: [id])
+  owner                    Owner                  @relation(fields: [owner_id], references: [id])
 
-    status           ShopStatus @default(ACTIVE)
-    suspended_reason String?
-
-    open_time  DateTime?
-    close_time DateTime?
-
-    products Product[]
-    orders   Order[]
-    owner    Owner     @relation(fields: [owner_id], references: [id])
-    owner_id String    @unique
-
-    order_mode               ShopOrderMode          @default(READY_ONLY) // metode menyiapkan order    
-    refund_disbursement_mode RefundDisbursementMode @default(CASH)
-
-    payments   Payment[]
-    billings   ShopBilling[]
-    qrcode_url String?
-
-    minimum_price Int?
-    maximum_price Int?
-
-    average_rating Float @default(0)
-    total_ratings  Int   @default(0)
-
-    shop_carts ShopCart[]
-
-    @@index([canteen_id])
-    @@index([name])
-    @@map("shops")
+  @@index([canteen_id])
+  @@index([name])
+  @@map("shops")
 }
 
 model ShopBilling {
-    id String @id @default(nanoid())
+  id         String            @id @default(nanoid())
+  shop_id    String
+  start_date DateTime
+  end_date   DateTime
+  subtotal   Float
+  refund     Float
+  total      Float
+  status     ShopBillingStatus @default(UNPAID)
+  shop       Shop              @relation(fields: [shop_id], references: [id])
 
-    shop    Shop   @relation(fields: [shop_id], references: [id])
-    shop_id String
-
-    start_date DateTime
-    end_date   DateTime
-    // Jumlah komisi yang harus dibayar (1000 per quantity order item)
-    subtotal   Float
-    // Jumlah refund yang di proses
-    refund     Float
-    // Total akhir yang harus dibayar (subtotal - refund)
-    total      Float
-    status     ShopBillingStatus @default(UNPAID)
-
-    @@map("shop_billings")
-}
-
-enum ShopBillingStatus {
-    PAID // sudah terbayar
-    UNPAID // belum dibayar
-}
-
-enum RefundDisbursementMode {
-    CASH // tunai
-    TRANSFER // transfer
-}
-
-enum ShopOrderMode {
-    PREORDER_ONLY // hanya preorder
-    READY_ONLY // hanya pemesanan langsung
-    BOTH // bisa keduanya
-}
-
-enum ShopStatus {
-    ACTIVE
-    INACTIVE
-    SUSPENDED
+  @@map("shop_billings")
 }
 
 model ShopComplaint {
-    id         String   @id @default(nanoid())
-    created_at DateTime @default(now())
+  id         String              @id @default(nanoid())
+  created_at DateTime            @default(now())
+  order_id   String              @unique
+  proof_url  String?
+  cause      String
+  feedback   String?
+  status     ShopComplaintStatus @default(PENDING)
+  order      Order               @relation(fields: [order_id], references: [id], onDelete: Cascade)
 
-    order    Order  @relation(fields: [order_id], references: [id], onDelete: Cascade)
-    order_id String @unique
-
-    proof_url String?
-    cause     String              @db.Text
-    feedback  String?             @db.Text
-    status    ShopComplaintStatus @default(PENDING)
-
-    @@map("shop_complaints")
-}
-
-enum ShopComplaintStatus {
-    PENDING // Baru dibuat, belum dilihat shop
-    UNDER_REVIEW // Shop sedang cek (lihat foto, chat, dll)
-    RESOLVED // Masalah selesai (bisa dengan/tanpa refund)
-    REJECTED // Ditolak (tidak valid, tidak cukup bukti)
-    ESCALATED // Naik ke admin/canteen (kasus berat)
+  @@map("shop_complaints")
 }
 
 model Payment {
-    method           PaymentMethod
-    qr_url           String?
-    account_number   String?
-    note             String? // bisa berupa nama akun dan bank
-    additional_price Float?
-    active           Boolean       @default(true)
+  method           PaymentMethod
+  qr_url           String?
+  account_number   String?
+  note             String?
+  additional_price Float?
+  active           Boolean       @default(true)
+  shop_id          String
+  shop             Shop          @relation(fields: [shop_id], references: [id])
 
-    shop    Shop   @relation(fields: [shop_id], references: [id])
-    shop_id String
+  @@unique([shop_id, method])
+  @@map("payments")
+}
 
-    @@unique([shop_id, method])
-    @@map("payments")
+enum ShopBillingStatus {
+  PAID
+  UNPAID
+}
+
+enum RefundDisbursementMode {
+  CASH
+  TRANSFER
+}
+
+enum ShopOrderMode {
+  PREORDER_ONLY
+  READY_ONLY
+  BOTH
+}
+
+enum ShopStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum ShopComplaintStatus {
+  PENDING
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+  ESCALATED
 }
 
 enum PaymentMethod {
-    QRIS
-    BANK_TRANSFER
-    CASH
+  QRIS
+  BANK_TRANSFER
+  CASH
 }
