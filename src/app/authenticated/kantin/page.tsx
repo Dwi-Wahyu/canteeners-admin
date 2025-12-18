@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { getCanteens } from "@/features/canteen/lib/canteen-queries";
+import { getImageUrl } from "@/helper/get-image-url";
 import Image from "next/image";
 
 export default async function KantinPage() {
@@ -14,10 +15,7 @@ export default async function KantinPage() {
           <Card key={canteen.id}>
             <CardContent>
               <Image
-                src={
-                  "https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/" +
-                  canteen.image_url
-                }
+                src={getImageUrl(canteen.image_url)}
                 alt=""
                 width={400}
                 height={400}

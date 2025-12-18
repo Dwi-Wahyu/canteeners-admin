@@ -1,6 +1,6 @@
 "use client";
 
-import { Category } from "@/app/generated/prisma";
+import { Category } from "@/generated/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/helper/get-image-url";
 import Image from "next/image";
