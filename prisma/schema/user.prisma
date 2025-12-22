@@ -1,17 +1,18 @@
 model User {
-  id          String      @id @default(uuid())
-  role        Role
-  name        String
-  username    String?     @unique
-  password    String?
-  avatar      String      @default("avatars/default-avatar.jpg")
-  created_at  DateTime    @default(now())
-  updated_at  DateTime    @updatedAt
-  last_login  DateTime?
-  admin       Admin?
-  customer    Customer?
-  owner       Owner?
-  quick_chats QuickChat[]
+  id              String            @id @default(uuid())
+  role            Role
+  name            String
+  username        String?           @unique
+  password        String?
+  avatar          String            @default("avatars/default-avatar.jpg")
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  last_login      DateTime?
+  admin           Admin?
+  customer        Customer?
+  owner           Owner?
+  quick_chats     QuickChat[]
+  user_fcm_tokens user_fcm_tokens[]
 
   @@index([last_login])
   @@index([role])

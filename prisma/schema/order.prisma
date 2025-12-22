@@ -22,7 +22,6 @@ model Order {
   order_items       OrderItem[]
   customer          Customer       @relation(fields: [customer_id], references: [id])
   shop              Shop           @relation(fields: [shop_id], references: [id])
-  payment_proofs    PaymentProof[]
   refund            Refund?
   complaint         ShopComplaint?
   testimony         ShopTestimony?
@@ -45,52 +44,11 @@ model OrderItem {
   subtotal         Float
   order            Order                @relation(fields: [order_id], references: [id], onDelete: Cascade)
   product          Product              @relation(fields: [product_id], references: [id])
+  refund_items     refund_items[]
   selected_options ProductOptionValue[] @relation("OrderItemToProductOptionValue")
 
   @@index([order_id])
   @@map("order_items")
-}
-
-model PaymentProof {
-  id String @id @default(nanoid())
-
-  image_url String
-
-  status          PaymentProofStatus @default(PENDING)
-  rejected_reason String?            @db.Text
-
-  order    Order  @relation(fields: [order_id], references: [id])
-  order_id String
-
-  created_at DateTime @default(now())
-
-  @@map("payment_proofs")
-}
-
-enum PaymentProofStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-model Refund {
-  id                     String                 @id @default(uuid())
-  order_id               String                 @unique
-  complaint_proof_url    String?
-  disbursement_proof_url String?
-  disbursement_mode      RefundDisbursementMode
-  amount                 Float
-  reason                 RefundReason
-  status                 RefundStatus           @default(PENDING)
-  description            String?
-  requested_at           DateTime               @default(now())
-  processed_at           DateTime?
-  rejected_reason        String?
-  order                  Order                  @relation(fields: [order_id], references: [id], onDelete: Cascade)
-
-  @@index([order_id])
-  @@index([status])
-  @@map("refunds")
 }
 
 enum OrderType {
@@ -114,20 +72,4 @@ enum PostOrderType {
   DELIVERY_TO_TABLE
   TAKEAWAY
   COURIER_DELIVERY
-}
-
-enum RefundReason {
-  LATE_DELIVERY
-  WRONG_ORDER
-  DAMAGED_FOOD
-  MISSING_ITEM
-  OTHER
-}
-
-enum RefundStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  PROCESSED
-  CANCELLED
 }

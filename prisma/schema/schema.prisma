@@ -24,9 +24,9 @@ model CanteenMap {
   image_url   String
   floor       Int
   canteen_id  Int
+  table_count Int           @default(0)
   canteen     Canteen       @relation(fields: [canteen_id], references: [id])
   qrcodes     TableQRCode[]
-  table_count Int           @default(0)
 
   @@map("canteen_maps")
 }
