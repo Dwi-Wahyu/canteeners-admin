@@ -45,7 +45,7 @@ export default function AppTopbar() {
                 </h1>
                 <Avatar className="size-8">
                   <AvatarImage
-                    src={session.data.user.avatar}
+                    src={getImageUrl(session.data.user.avatar)}
                     alt={session.data.user.name}
                   />
                   <AvatarFallback className="text-xs">HR</AvatarFallback>

@@ -15,6 +15,7 @@ import {
   Building,
   ContactRound,
   DollarSign,
+  HelpCircle,
   Truck,
   UserPlus,
 } from "lucide-react";
@@ -74,6 +75,11 @@ export const adminMenu = {
       title: "Pengaturan Aplikasi",
       url: "/authenticated/pengaturan-aplikasi",
       icon: Settings,
+    },
+    {
+      title: "FAQ",
+      url: "/authenticated/faq",
+      icon: HelpCircle,
     },
   ],
 };

@@ -23,8 +23,6 @@ export const authConfig: NextAuthConfig = {
           where: { username },
         });
 
-        console.log(user);
-
         if (!user) return null;
 
         if (!user.password) return null;
