@@ -1,18 +1,18 @@
 model User {
-  id              String            @id @default(uuid())
+  id              String          @id @default(uuid())
   role            Role
   name            String
-  username        String?           @unique
+  username        String?         @unique
   password        String?
-  avatar          String            @default("avatars/default-avatar.jpg")
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt
+  avatar          String          @default("avatars/default-avatar.jpg")
+  created_at      DateTime        @default(now())
+  updated_at      DateTime        @updatedAt
   last_login      DateTime?
   admin           Admin?
   customer        Customer?
   owner           Owner?
   quick_chats     QuickChat[]
-  user_fcm_tokens user_fcm_tokens[]
+  user_fcm_tokens UserFCMTokens[]
 
   @@index([last_login])
   @@index([role])
@@ -61,4 +61,26 @@ enum Role {
   ADMIN
   CUSTOMER
   SHOP_OWNER
+}
+
+model UserFCMTokens {
+  id           String      @id
+  user_id      String
+  token        String      @unique
+  platform     FcmPlatform
+  browser      String?
+  is_active    Boolean     @default(true)
+  last_used_at DateTime?
+  created_at   DateTime    @default(now())
+  updated_at   DateTime
+  users        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([platform])
+  @@index([user_id])
+}
+
+enum FcmPlatform {
+  WEB
+  ANDROID
+  IOS
 }
