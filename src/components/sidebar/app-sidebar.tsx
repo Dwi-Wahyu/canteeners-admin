@@ -16,6 +16,7 @@ import {
   Building,
   ContactRound,
   DollarSign,
+  FileText,
   HelpCircle,
   Truck,
   UserPlus,
@@ -42,6 +43,11 @@ export const adminMenu = {
       title: "Kedai",
       url: "/authenticated/kedai",
       icon: Store,
+    },
+    {
+      title: "Riwayat Order",
+      url: "/authenticated/order",
+      icon: FileText,
     },
     {
       title: "Kategori",

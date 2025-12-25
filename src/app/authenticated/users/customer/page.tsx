@@ -22,6 +22,7 @@ export default async function CustomerPage(props: IndexPageProps) {
       <Card>
         <CardContent>
           <Suspense fallback={<DataTableSkeleton columnCount={5} />}>
+            <h1 className="text-2xl font-semibold mb-4">Manajemen Pelanggan</h1>
             <UsersTable promises={promises} columns={CustomerColumns} />
           </Suspense>
         </CardContent>

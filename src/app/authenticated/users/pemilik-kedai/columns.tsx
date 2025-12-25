@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, SquarePen, Trash } from "lucide-react";
 import { useState } from "react";
 import { UsersTableDataType } from "@/features/users/types/queries-return-types";
+import { getImageUrl } from "@/helper/get-image-url";
 
 export const ShopOwnerColumns: ColumnDef<UsersTableDataType>[] = [
   {
@@ -17,7 +18,7 @@ export const ShopOwnerColumns: ColumnDef<UsersTableDataType>[] = [
       return (
         <img
           className="rounded-lg"
-          src={avatar ?? "default-avatar.jpg"}
+          src={getImageUrl(avatar)}
           alt={name}
           width={100}
           height={100}

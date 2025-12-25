@@ -5,19 +5,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
-import { UserPlus } from "lucide-react";
-import NavButton from "@/components/nav-button";
 import {
-  GetUsersTableDataResponseType,
-  UsersTableDataType,
-} from "@/features/users/types/queries-return-types";
+  GetOrdersTableDataResponseType,
+  OrdersTableDataType,
+} from "@/features/order/types/order-queries-return-types";
 
-export default function UsersTable({
+export default function OrdersTable({
   promises,
   columns,
 }: {
-  promises: GetUsersTableDataResponseType;
-  columns: ColumnDef<UsersTableDataType>[];
+  promises: GetOrdersTableDataResponseType;
+  columns: ColumnDef<OrdersTableDataType>[];
 }) {
   const { data, filtered, pageCount } = promises;
 
@@ -37,14 +35,11 @@ export default function UsersTable({
 
   return (
     <DataTable table={table}>
-      <DataTableToolbar table={table}>
-        <DataTableSortList table={table} />
+      <div className="flex justify-between w-full">
+        <h1 className="text-xl font-semibold mb-4">Riwayat Order</h1>
 
-        <NavButton href="/authenticated/users/create">
-          <UserPlus />
-          Input User
-        </NavButton>
-      </DataTableToolbar>
+        <DataTableSortList table={table} />
+      </div>
     </DataTable>
   );
 }
