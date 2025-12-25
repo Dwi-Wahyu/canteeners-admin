@@ -14,6 +14,9 @@ model User {
   quick_chats     QuickChat[]
   user_fcm_tokens UserFCMTokens[]
 
+  sent_reports     UserReport[] @relation("SentReports")
+  received_reports UserReport[] @relation("ReceivedReports")
+
   @@index([last_login])
   @@index([role])
   @@map("users")

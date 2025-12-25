@@ -13,3 +13,20 @@ export async function getShopById(id: string) {
     },
   });
 }
+
+export async function getShopDetail(id: string) {
+  return await prisma.shop.findUnique({
+    where: { id },
+    include: {
+      owner: {
+        include: { user: true },
+      },
+      canteen: true,
+      payments: true,
+      billings: {
+        orderBy: { start_date: "desc" },
+        take: 5, // Mengambil 5 tagihan terakhir
+      },
+    },
+  });
+}

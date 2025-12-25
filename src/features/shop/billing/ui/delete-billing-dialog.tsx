@@ -44,11 +44,7 @@ export default function DeleteBillingDialog({
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="sm"
-          disabled={isPending || billing.status === "PAID"}
-        >
+        <Button variant="destructive" size="sm" disabled={isPending}>
           <Trash2 /> Hapus
         </Button>
       </AlertDialogTrigger>

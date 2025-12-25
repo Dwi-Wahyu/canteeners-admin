@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Loader, Quote } from "lucide-react";
+import { Loader2, Quote } from "lucide-react";
 import { LoginSchema, LoginInput } from "@/features/auth/lib/auth-type";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -33,6 +33,7 @@ const testimonials = [
 export default function LoginPage() {
   const router = useRouter();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Logic untuk ganti testimoni tiap 3 detik
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function LoginPage() {
   });
 
   async function onSubmit(data: LoginInput) {
+    setIsLoading(true);
     const res = await signIn("credentials", {
       username: data.username,
       password: data.password,
@@ -55,9 +57,11 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
+      setIsLoading(false);
       form.setError("username", { message: "Username atau Password salah" });
       form.setError("password", { message: "Username atau Password salah" });
     } else {
+      setIsLoading(false);
       router.push("/authenticated/dashboard");
     }
   }
@@ -128,7 +132,7 @@ export default function LoginPage() {
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting && (
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
               )}
               Sign In
             </Button>

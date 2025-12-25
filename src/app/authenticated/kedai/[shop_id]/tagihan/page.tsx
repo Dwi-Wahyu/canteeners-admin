@@ -18,7 +18,7 @@ export default async function ShopBillingPage({ params }: Props) {
   const billings = await getShopBillings(shop_id);
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex items-end justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">

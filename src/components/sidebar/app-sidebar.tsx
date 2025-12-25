@@ -11,6 +11,7 @@ import {
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+  AlertCircle,
   BookUser,
   Building,
   ContactRound,
@@ -46,6 +47,11 @@ export const adminMenu = {
       title: "Kategori",
       url: "/authenticated/kategori",
       icon: Tags,
+    },
+    {
+      title: "Laporan",
+      url: "/authenticated/laporan",
+      icon: AlertCircle,
     },
   ],
   navUser: [
