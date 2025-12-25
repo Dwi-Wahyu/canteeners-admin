@@ -1,5 +1,3 @@
-"use client";
-
 import { SearchParams } from "nuqs";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import UsersTable from "../users-table";
