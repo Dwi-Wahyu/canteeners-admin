@@ -1,7 +1,7 @@
 "use client";
 
 import type { Column, Table } from "@tanstack/react-table";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import * as React from "react";
 
 import { DataTableDateFilter } from "@/components/data-table/data-table-date-filter";
@@ -11,7 +11,6 @@ import { DataTableViewOptions } from "@/components/data-table/data-table-view-op
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface DataTableToolbarProps<TData> extends React.ComponentProps<"div"> {
@@ -72,7 +71,7 @@ export function DataTableToolbar<TData>({
         {inputButtonLink?.length && (
           <Button asChild>
             <Link href="/admin/prajurit/create">
-              <IconPlus />
+              <Plus />
               {inputButtonLabel}
             </Link>
           </Button>
