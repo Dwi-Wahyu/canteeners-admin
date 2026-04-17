@@ -15,7 +15,7 @@ export async function seedUsers() {
 
   if (!adminPassword) {
     console.error(
-      "Variabel lingkungan tidak ditemukan. Seeding admin dibatalkan."
+      "Variabel lingkungan tidak ditemukan. Seeding admin dibatalkan.",
     );
     await prisma.$disconnect();
     return;
@@ -35,7 +35,7 @@ export async function seedUsers() {
     });
 
     const userCreationPromises = usersToSeed.map(async (userData) => {
-      const upserted = await prisma.user.upsert({
+      await prisma.user.upsert({
         where: { username: userData.username },
         update: {
           name: userData.name,
