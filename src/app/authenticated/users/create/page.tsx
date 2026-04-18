@@ -41,7 +41,7 @@ export default function CreateUserPage() {
       username: "",
       password: "",
       role: "SHOP_OWNER",
-      avatar: "avatars/default-avatar.jpg",
+      avatar: "default-avatar.jpg",
     },
   });
 

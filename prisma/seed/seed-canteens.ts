@@ -8,17 +8,17 @@ export async function seedCanteens() {
       data: [
         {
           name: "Kantin Kudapan",
-          image_url: "canteens/kudapan.webp",
+          image_url: "kudapan.webp",
           slug: generateCategorySlug("Kantin Kudapan"),
         },
         {
           name: "Kantin Sastra",
-          image_url: "canteens/kansas.jpeg",
+          image_url: "kansas.jpeg",
           slug: generateCategorySlug("Kantin Sastra"),
         },
         {
           name: "Kantin Sosiologi",
-          image_url: "canteens/kansos.webp",
+          image_url: "kansos.webp",
           slug: generateCategorySlug("Kantin Sosiologi"),
         },
       ],
@@ -34,11 +34,11 @@ export async function seedCanteens() {
             data: [
               {
                 floor: 1,
-                image_url: "canteens/maps/kantin-kudapan-lantai-1.svg",
+                image_url: "kudapan-lantai-1.png",
               },
               {
                 floor: 2,
-                image_url: "canteens/maps/kantin-kudapan-lantai-2.svg",
+                image_url: "kudapan-lantai-2.png",
               },
             ],
           },

@@ -48,18 +48,18 @@ export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
 
     const file = inputFileRef.current.files[0];
 
-    const filename = `shops/${file.name}`;
-
     try {
       const formData = new FormData();
-
+      formData.append("path", "shop");
       formData.append("file", file);
-      formData.append("filename", filename);
 
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const uploadResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/files/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!uploadResponse.ok) {
         form.setError("image_url", {
@@ -68,12 +68,12 @@ export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
         return;
       }
 
-      const uploadedBlob = await uploadResponse.json();
-      const url = uploadedBlob.url;
+      const uploadResult = await uploadResponse.json();
+      const filename = uploadResult.data.filename;
 
-      const formDataWithImage = { ...data, image_url: url };
+      const formDataWithImage = { ...data, image_url: filename };
 
-      console.log("File berhasil diunggah:", url);
+      console.log("File berhasil diunggah:", filename);
       console.log("Data form lengkap:", formDataWithImage);
 
       const result = await createShop(formDataWithImage);

@@ -42,7 +42,7 @@ export default function ShopDetailClient({
       <div className="flex flex-col md:flex-row gap-6 items-start border-b pb-8">
         <div className="relative w-full md:w-48 aspect-square rounded-xl overflow-hidden shadow-md border">
           <Image
-            src={getImageUrl(shop.image_url)}
+            src={getImageUrl("/shop/" + shop.image_url)}
             alt={shop.name}
             fill
             className="object-cover"

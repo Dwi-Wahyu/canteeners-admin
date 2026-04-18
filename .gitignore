@@ -37,6 +37,8 @@ bun.lock
 # vercel
 .vercel
 
+next.config.ts
+
 src/generated/prisma
 
 # typescript

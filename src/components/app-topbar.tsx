@@ -45,7 +45,7 @@ export default function AppTopbar() {
                 </h1>
                 <Avatar className="size-8">
                   <AvatarImage
-                    src={getImageUrl(session.data.user.avatar)}
+                    src={getImageUrl("/avatar/" + session.data.user.avatar)}
                     alt={session.data.user.name}
                   />
                   <AvatarFallback className="text-xs">HR</AvatarFallback>
@@ -58,7 +58,7 @@ export default function AppTopbar() {
                 </h1>
                 <Avatar className="size-8">
                   <AvatarImage
-                    src={"avatars/default-avatar.jpg"}
+                    src={getImageUrl("/avatar/default-avatar.jpg")}
                     alt={"Administrator"}
                   />
                   <AvatarFallback className="text-xs">HR</AvatarFallback>

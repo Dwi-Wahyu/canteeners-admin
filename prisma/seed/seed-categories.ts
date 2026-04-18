@@ -7,15 +7,15 @@ export async function seedCategories() {
     const categories = [
       {
         name: "Es Buah",
-        image_url: "categories/es-buah.jpg",
+        image_url: "es-buah.jpg",
       },
       {
         name: "Ayam Geprek",
-        image_url: "categories/ayam-geprek.jpg",
+        image_url: "ayam-geprek.jpg",
       },
       {
         name: "Gorengan",
-        image_url: "categories/gorengan.jpg",
+        image_url: "gorengan.jpg",
       },
     ];
 

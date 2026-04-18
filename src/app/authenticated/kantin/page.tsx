@@ -1,32 +1,44 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { getCanteens } from "@/features/canteen/lib/canteen-queries";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getImageUrl } from "@/helper/get-image-url";
-import Image from "next/image";
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function KantinPage() {
-  const canteens = await getCanteens();
+  const canteens = await prisma.canteen.findMany();
 
   return (
     <div>
-      <h1>Daftar Kantin</h1>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            <Skeleton className="w-full h-40" />
+            <Skeleton className="w-full h-40" />
+            <Skeleton className="w-full h-40" />
+          </div>
+        }
+      >
+        <div className="grid grid-cols-3 gap-4">
+          {canteens.map((canteen, idx) => (
+            <Link href={"/authenticated/kantin/" + canteen.id} key={idx}>
+              <Card>
+                <CardContent>
+                  <img
+                    src={getImageUrl("/canteen/" + canteen.image_url)}
+                    alt=""
+                    className="rounded-lg"
+                  />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {canteens.map((canteen) => (
-          <Card key={canteen.id}>
-            <CardContent>
-              <Image
-                src={getImageUrl(canteen.image_url)}
-                alt=""
-                width={400}
-                height={400}
-                className="rounded-lg shadow mb-2"
-              />
-
-              <h1>{canteen.name}</h1>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                  <h1 className="text-center font-semibold mt-4">
+                    {canteen.name}
+                  </h1>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </Suspense>
     </div>
   );
 }

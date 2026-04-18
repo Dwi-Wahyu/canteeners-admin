@@ -18,7 +18,7 @@ export default function CategoryAdminCard({
       <CardContent className="p-0">
         <div className="relative aspect-square overflow-hidden bg-muted">
           <Image
-            src={getImageUrl(category.image_url)}
+            src={getImageUrl("/category/" + category.image_url)}
             alt={category.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"

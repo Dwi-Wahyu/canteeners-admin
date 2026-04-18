@@ -18,7 +18,7 @@ export const CustomerColumns: ColumnDef<UsersTableDataType>[] = [
       return (
         <img
           className="rounded-lg"
-          src={getImageUrl(avatar)}
+          src={getImageUrl("/avatar/" + avatar)}
           alt={name}
           width={100}
           height={100}

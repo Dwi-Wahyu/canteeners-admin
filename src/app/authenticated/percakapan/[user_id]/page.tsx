@@ -43,7 +43,9 @@ export default async function UserConversationPage({
                     {/* Avatar Partner */}
                     <div className="relative">
                       <Avatar className="h-12 w-12 border">
-                        <AvatarImage src={getImageUrl(partner?.avatar || "")} />
+                        <AvatarImage
+                          src={getImageUrl("/avatar/" + (partner?.avatar || ""))}
+                        />
                         <AvatarFallback>
                           {partner?.name?.substring(0, 2).toUpperCase()}
                         </AvatarFallback>

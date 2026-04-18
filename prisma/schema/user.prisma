@@ -4,7 +4,7 @@ model User {
   name            String
   username        String?         @unique
   password        String?
-  avatar          String          @default("avatars/default-avatar.jpg")
+  avatar          String          @default("default-avatar.jpg")
   created_at      DateTime        @default(now())
   updated_at      DateTime        @updatedAt
   last_login      DateTime?

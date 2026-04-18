@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 config();
 
-const DEFAULT_AVATAR = "avatars/default-avatar.jpg";
+const DEFAULT_AVATAR = "default-avatar.jpg";
 
 export async function seedUsers() {
   console.log("Memulai seeding users...");

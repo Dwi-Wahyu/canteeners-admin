@@ -5,7 +5,12 @@ const nextConfig: NextConfig = {
 
   images: {
     remotePatterns: [
-      new URL("https://mwozu5eodkq4uc39.public.blob.vercel-storage.com/**"),
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3002",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };

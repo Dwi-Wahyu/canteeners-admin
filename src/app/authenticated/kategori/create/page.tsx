@@ -60,26 +60,31 @@ export default function CreateCategoryPage() {
 
     setIsLoading(true);
     const file = inputFileRef.current.files[0];
-    const filename = `categories/${Date.now()}-${file.name}`; // Tambah timestamp agar unik
 
     try {
       const formData = new FormData();
+      formData.append("path", "category");
       formData.append("file", file);
-      formData.append("filename", filename);
 
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const uploadResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/files/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!uploadResponse.ok) throw new Error("Gagal upload");
 
-      const uploadedBlob = await uploadResponse.json();
-      const url = uploadedBlob.pathname;
+      const result = await uploadResponse.json();
+      const filename = result.data.filename;
 
-      const result = await createCategory({ ...data, image_url: url });
+      const actionResult = await createCategory({
+        ...data,
+        image_url: filename,
+      });
 
-      if (result.success) {
+      if (actionResult.success) {
         form.reset();
         setPreviewUrl(null);
         toast.success("Berhasil menambahkan kategori baru!");

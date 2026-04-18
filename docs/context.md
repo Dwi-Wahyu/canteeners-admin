@@ -544,8 +544,9 @@ Key variables (check `.env` for actual values):
 
 ### File Uploads
 
-- Service: Vercel Blob
-- API endpoint: `/api/upload`
+- Service: Backend File Storage (Multer)
+- API endpoint: `${NEXT_PUBLIC_BACKEND_URL}/files/upload`
+- Storage: `/uploads/[prefix]/`
 - Usage: Product images, avatars, payment proofs, QR codes
 
 ### Chat System

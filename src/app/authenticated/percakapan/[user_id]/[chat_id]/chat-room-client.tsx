@@ -67,7 +67,9 @@ export default function ChatRoomClient({
               >
                 {/* Avatar untuk setiap pesan */}
                 <Avatar className="h-8 w-8 shrink-0 mt-4">
-                  <AvatarImage src={getImageUrl(senderInfo?.avatar || "")} />
+                  <AvatarImage
+                    src={getImageUrl("/avatar/" + (senderInfo?.avatar || ""))}
+                  />
                   <AvatarFallback>{senderInfo?.name?.[0]}</AvatarFallback>
                 </Avatar>
 

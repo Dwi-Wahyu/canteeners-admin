@@ -37,7 +37,7 @@ export default async function KedaiPage() {
                 {/* Image Container */}
                 <div className="relative aspect-video overflow-hidden border-b">
                   <Image
-                    src={getImageUrl(shop.image_url)}
+                    src={getImageUrl("/shop/" + shop.image_url)}
                     alt={shop.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
