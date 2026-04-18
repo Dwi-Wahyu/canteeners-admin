@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 async function main() {
   await prisma.canteenMap.deleteMany();
+  await prisma.shopCart.deleteMany();
   await prisma.shop.deleteMany();
   await prisma.user.deleteMany();
   await prisma.canteen.deleteMany();
