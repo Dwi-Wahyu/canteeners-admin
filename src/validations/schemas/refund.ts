@@ -1,8 +1,4 @@
-import {
-  RefundDisbursementMode,
-  RefundReason,
-  RefundStatus,
-} from "@/app/generated/prisma";
+import { RefundReason, RefundStatus } from "@/generated/prisma";
 import { z } from "zod";
 
 export const InputRefundSchema = z.object({

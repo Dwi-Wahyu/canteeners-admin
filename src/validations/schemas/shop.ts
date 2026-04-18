@@ -1,4 +1,4 @@
-import { RefundDisbursementMode } from "@/app/generated/prisma";
+import { RefundDisbursementMode } from "@/generated/prisma";
 import { z } from "zod";
 
 export const PaymentMethodEnum = z.enum(["QRIS", "BANK_TRANSFER", "CASH"]);
@@ -40,7 +40,7 @@ export const InputPaymentSchema = z
       message:
         "Validasi Metode Pembayaran Gagal. Pastikan hanya kolom yang relevan (account_number atau qr_url) yang terisi sesuai metode yang dipilih.",
       path: ["method"], // Tampilkan error ini pada field 'method'
-    }
+    },
   );
 
 export type InputPaymentSchemaType = z.infer<typeof InputPaymentSchema>;

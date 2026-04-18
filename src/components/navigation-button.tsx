@@ -44,7 +44,7 @@ export function NavigationButton({
   className?: string;
 }) {
   return (
-    <Button asChild variant={variant} type="button" size={size}>
+    <Button asChild type="button" size={size}>
       <Link href={url}>{children ?? label}</Link>
     </Button>
   );
