@@ -2,11 +2,28 @@ model CustomerViolation {
   id          Int                   @id @default(autoincrement())
   timestamp   DateTime
   type        CustomerViolationType
-  customer    Customer?             @relation(fields: [customer_id], references: [id])
   customer_id String?
   order_id    String?
+  customer    Customer?             @relation(fields: [customer_id], references: [id])
 
   @@map("customer_violations")
+}
+
+model UserReport {
+  id            String       @id @default(cuid())
+  reporter_id   String
+  reported_id   String
+  category      ReportReason
+  description   String
+  proof_url     String?
+  status        ReportStatus @default(PENDING)
+  admin_note    String?
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  reported_user User         @relation("ReceivedReports", fields: [reported_id], references: [id])
+  reporter      User         @relation("SentReports", fields: [reporter_id], references: [id])
+
+  @@map("user_reports")
 }
 
 enum CustomerViolationType {
@@ -21,31 +38,9 @@ enum ReportStatus {
 }
 
 enum ReportReason {
-  HARASSMENT // Pelecehan di chat
-  FRAUD // Penipuan
-  SPAM // Pesan mengganggu
-  INAPPROPRIATE // Konten/Profil tidak pantas
-  OTHER // Alasan lainnya
-}
-
-model UserReport {
-  id String @id @default(cuid())
-
-  reporter_id String
-  reporter    User   @relation("SentReports", fields: [reporter_id], references: [id])
-
-  reported_id   String
-  reported_user User   @relation("ReceivedReports", fields: [reported_id], references: [id])
-
-  category    ReportReason
-  description String       @db.Text
-  proof_url   String?
-
-  status     ReportStatus @default(PENDING)
-  admin_note String?      @db.Text // Catatan admin setelah review
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@map("user_reports")
+  HARASSMENT
+  FRAUD
+  SPAM
+  INAPPROPRIATE
+  OTHER
 }

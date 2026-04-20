@@ -1,9 +1,12 @@
 import { seedUsers } from "./seed-users";
 import { seedCanteens } from "./seed-canteens";
 import { seedCategories } from "./seed-categories";
+import { seedShops } from "./seed-shops";
+import { seedCustomers } from "./seed-customers";
 import { prisma } from "@/lib/prisma";
 
 async function main() {
+  await prisma.tableQRCode.deleteMany();
   await prisma.canteenMap.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.shopTestimony.deleteMany();
@@ -21,6 +24,8 @@ async function main() {
   await seedCanteens();
   await seedCategories();
   await seedUsers();
+  await seedShops();
+  await seedCustomers();
 }
 
 main()
