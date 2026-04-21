@@ -1,9 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button"; // Asumsi kamu punya komponen Button
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { getShops } from "@/features/shop/lib/shop-queries";
 import { getImageUrl } from "@/helper/get-image-url";
 import { PlusCircle, Store } from "lucide-react"; // Ikon tambahan
-import Image from "next/image";
 import Link from "next/link";
 import NavButton from "@/components/nav-button";
 
@@ -36,10 +34,9 @@ export default async function KedaiPage() {
               <Card className="group overflow-hidden border-2 hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-xl cursor-pointer">
                 {/* Image Container */}
                 <div className="relative aspect-video overflow-hidden border-b">
-                  <Image
+                  <img
                     src={getImageUrl("/shop/" + shop.image_url)}
                     alt={shop.name}
-                    fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   {/* Overlay tipis saat hover */}

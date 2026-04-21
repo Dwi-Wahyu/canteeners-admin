@@ -3,7 +3,6 @@
 import { Category } from "@/generated/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { getImageUrl } from "@/helper/get-image-url";
-import Image from "next/image";
 import { deleteCategory } from "../lib/category-actions";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
@@ -17,10 +16,9 @@ export default function CategoryAdminCard({
     <Card className="group overflow-hidden border-muted/60 hover:border-destructive/30 transition-all duration-300 shadow-sm hover:shadow-md">
       <CardContent className="p-0">
         <div className="relative aspect-square overflow-hidden bg-muted">
-          <Image
+          <img
             src={getImageUrl("/category/" + category.image_url)}
             alt={category.name}
-            fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
 
@@ -31,7 +29,7 @@ export default function CategoryAdminCard({
               className="h-8 w-8 shadow-lg cursor-pointer"
               onClick={async () => {
                 const confirmDelete = confirm(
-                  `Hapus kategori ${category.name}?`
+                  `Hapus kategori ${category.name}?`,
                 );
                 if (confirmDelete) await deleteCategory(category.id);
               }}

@@ -31,6 +31,8 @@ model Shop {
     average_rating Float @default(0)
     total_ratings  Int   @default(0)
 
+    is_auto_accept Boolean @default(false)
+
     shop_carts ShopCart[]
 
     @@index([canteen_id])
@@ -46,7 +48,7 @@ model ShopBilling {
 
     start_date DateTime
     end_date   DateTime
-    // Jumlah komisi yang harus dibayar (1000 per quantity order item)
+    // Jumlah komisi yang harus dibayar (Berdasarkan skema komisi bertingkat)
     subtotal   Float
     // Jumlah refund yang di proses
     refund     Float

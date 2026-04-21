@@ -18,6 +18,7 @@ import {
   DollarSign,
   FileText,
   HelpCircle,
+  Image as LucideImage,
   Truck,
   UserPlus,
 } from "lucide-react";
@@ -53,6 +54,11 @@ export const adminMenu = {
       title: "Kategori",
       url: "/authenticated/kategori",
       icon: Tags,
+    },
+    {
+      title: "Banner",
+      url: "/authenticated/banner",
+      icon: LucideImage,
     },
     {
       title: "Laporan",
