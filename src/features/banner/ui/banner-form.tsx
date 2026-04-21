@@ -123,6 +123,7 @@ export default function BannerForm({ initialData, mode }: BannerFormProps) {
                   type="number"
                   placeholder="Misal: 1"
                   {...field}
+                  onChange={(e) => field.onChange(e.target.value === "" ? 0 : Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
