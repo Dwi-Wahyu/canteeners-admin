@@ -46,7 +46,7 @@ export default function QrcodeMejaClient({
           toast.success(result.message || "Berhasil generate QR Code");
           router.refresh(); // Memperbarui data server-side
         } else {
-          toast.error(result.error.message);
+          toast.error("Terjadi kesalahan saat membuat QR Code");
         }
       } catch (error) {
         toast.error("Gagal generate QR Code");

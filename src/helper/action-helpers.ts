@@ -1,16 +1,15 @@
-import { ServerActionReturn } from "@/types/server-action";
-
+import { ActionError, ActionSuccess } from "@/types/server-action";
 export function successResponse<T = void>(
   data?: T,
-  message?: string
-): ServerActionReturn<T> {
+  message?: string,
+): ActionSuccess<T> {
   return { success: true, data, message };
 }
 
 export function errorResponse(
   message: string,
   code?: string,
-  details?: any
-): ServerActionReturn<never> {
+  details?: any,
+): ActionError {
   return { success: false, error: { message, code, details } };
 }
