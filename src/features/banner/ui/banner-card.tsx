@@ -12,15 +12,8 @@ import { deleteBanner } from "../lib/banner-actions";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Edit, Trash2, ExternalLink } from "lucide-react";
-import Image from "next/image";
 import { getImageUrl } from "@/helper/get-image-url";
-
-interface Banner {
-  id: number;
-  order: number;
-  file: string;
-  cta_path: string | null;
-}
+import { Banner } from "@/generated/prisma";
 
 export default function BannerCard({ banner }: { banner: Banner }) {
   const handleDelete = async () => {
@@ -57,7 +50,7 @@ export default function BannerCard({ banner }: { banner: Banner }) {
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4 pt-0 flex-grow">
+      <CardContent className="p-4 pt-0 grow">
         <p className="text-sm text-muted-foreground truncate">
           {banner.cta_path || "Tidak ada CTA path"}
         </p>
