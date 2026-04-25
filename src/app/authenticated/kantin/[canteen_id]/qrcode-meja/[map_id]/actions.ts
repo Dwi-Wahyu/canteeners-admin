@@ -93,7 +93,7 @@ export async function deleteTableQRCode({
   canteen_id,
   map_id,
 }: {
-  id: number;
+  id: string;
   image_url: string;
   canteen_id: number;
   map_id: number;

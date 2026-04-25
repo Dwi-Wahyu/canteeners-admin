@@ -12,7 +12,7 @@ import { Option } from "@/types/data-table";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { orderStatusMapping } from "@/constants/order-status-mapping";
-import { paymentMethodMapping } from "@/constants/payment-method.tsx";
+import { paymentMethodMapping } from "@/constants/payment-method";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 

@@ -23,18 +23,24 @@ import {
 import NavButton from "@/components/nav-button";
 import { getOrderDetail } from "@/features/order/lib/order-queries";
 import { orderStatusMapping } from "@/constants/order-status-mapping";
-import { paymentMethodMapping } from "@/constants/payment-method.tsx";
 import { postOrderTypeMapping } from "@/constants/post-order-type-mapping";
 import { Separator } from "@/components/ui/separator";
 import { calculateCommission } from "@/helper/pricing-helper";
+import { paymentMethodMapping } from "@/constants/payment-method";
 
 export default function OrderDetailClient({
   order,
 }: {
   order: NonNullable<Awaited<ReturnType<typeof getOrderDetail>>>;
 }) {
-  const totalQty = order.order_items.reduce((acc, item) => acc + item.quantity, 0);
-  const isCancelled = order.status === "CANCELLED" || order.status === "REJECTED" || order.status === "PAYMENT_REJECTED";
+  const totalQty = order.order_items.reduce(
+    (acc, item) => acc + item.quantity,
+    0,
+  );
+  const isCancelled =
+    order.status === "CANCELLED" ||
+    order.status === "REJECTED" ||
+    order.status === "PAYMENT_REJECTED";
   const commission = isCancelled ? 0 : calculateCommission(totalQty);
 
   const orderStatusColors: Record<string, string> = {
@@ -69,8 +75,15 @@ export default function OrderDetailClient({
                 <CardTitle className="text-lg">Status Pesanan</CardTitle>
                 <CardDescription>Informasi status saat ini.</CardDescription>
               </div>
-              <Badge variant="outline" className={orderStatusColors[order.status] || ""}>
-                {orderStatusMapping[order.status as keyof typeof orderStatusMapping]}
+              <Badge
+                variant="outline"
+                className={orderStatusColors[order.status] || ""}
+              >
+                {
+                  orderStatusMapping[
+                    order.status as keyof typeof orderStatusMapping
+                  ]
+                }
               </Badge>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-4 pt-4">
@@ -92,7 +105,11 @@ export default function OrderDetailClient({
                     Tipe Pesanan
                   </p>
                   <p className="text-sm font-medium">
-                    {postOrderTypeMapping[order.post_order_type as keyof typeof postOrderTypeMapping]}
+                    {
+                      postOrderTypeMapping[
+                        order.post_order_type as keyof typeof postOrderTypeMapping
+                      ]
+                    }
                   </p>
                 </div>
               </div>
@@ -103,13 +120,17 @@ export default function OrderDetailClient({
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <ClipboardList className="w-5 h-5 text-primary" /> Rincian Pesanan
+                <ClipboardList className="w-5 h-5 text-primary" /> Rincian
+                Pesanan
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {order.order_items.map((item) => (
-                  <div key={item.id} className="flex justify-between gap-4 py-2 border-b last:border-0">
+                  <div
+                    key={item.id}
+                    className="flex justify-between gap-4 py-2 border-b last:border-0"
+                  >
                     <div className="space-y-1">
                       <p className="font-bold text-sm">{item.product.name}</p>
                       <p className="text-xs text-muted-foreground">
@@ -118,8 +139,12 @@ export default function OrderDetailClient({
                       {item.selected_options.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-1">
                           {item.selected_options.map((opt) => (
-                            <Badge key={opt.id} variant="secondary" className="text-[10px] py-0">
-                              {opt.name}
+                            <Badge
+                              key={opt.id}
+                              variant="secondary"
+                              className="text-[10px] py-0"
+                            >
+                              {opt.value}
                             </Badge>
                           ))}
                         </div>
@@ -131,7 +156,9 @@ export default function OrderDetailClient({
                       )}
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sm">{formatRupiah(item.subtotal)}</p>
+                      <p className="font-bold text-sm">
+                        {formatRupiah(item.subtotal)}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -140,11 +167,22 @@ export default function OrderDetailClient({
               <div className="mt-6 space-y-2 pt-4 border-t">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal Produk</span>
-                  <span>{formatRupiah(order.order_items.reduce((acc, item) => acc + item.subtotal, 0))}</span>
+                  <span>
+                    {formatRupiah(
+                      order.order_items.reduce(
+                        (acc, item) => acc + item.subtotal,
+                        0,
+                      ),
+                    )}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Komisi Platform</span>
-                  <span className={isCancelled ? "text-muted-foreground line-through" : ""}>
+                  <span
+                    className={
+                      isCancelled ? "text-muted-foreground line-through" : ""
+                    }
+                  >
                     {formatRupiah(commission)}
                   </span>
                 </div>
@@ -174,7 +212,9 @@ export default function OrderDetailClient({
             </CardHeader>
             <CardContent>
               <p className="font-bold">{order.customer.user.name}</p>
-              <p className="text-sm text-muted-foreground">{order.customer.email || order.customer.user.username}</p>
+              <p className="text-sm text-muted-foreground">
+                {order.customer.email || order.customer.user.username}
+              </p>
             </CardContent>
           </Card>
 
@@ -186,7 +226,9 @@ export default function OrderDetailClient({
             </CardHeader>
             <CardContent>
               <p className="font-bold">{order.shop.name}</p>
-              <p className="text-sm text-muted-foreground">{order.shop.canteen.name}</p>
+              <p className="text-sm text-muted-foreground">
+                {order.shop.canteen.name}
+              </p>
             </CardContent>
           </Card>
 
@@ -198,12 +240,17 @@ export default function OrderDetailClient({
             </CardHeader>
             <CardContent>
               <p className="font-medium">
-                {paymentMethodMapping[order.payment_method as keyof typeof paymentMethodMapping]}
+                {
+                  paymentMethodMapping[
+                    order.payment_method as keyof typeof paymentMethodMapping
+                  ]
+                }
               </p>
             </CardContent>
           </Card>
 
-          {(order.post_order_type === "DELIVERY_TO_TABLE" || order.table_number) && (
+          {(order.post_order_type === "DELIVERY_TO_TABLE" ||
+            order.table_number) && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
@@ -212,7 +259,9 @@ export default function OrderDetailClient({
               </CardHeader>
               <CardContent>
                 <p className="font-bold">Meja {order.table_number}</p>
-                <p className="text-sm text-muted-foreground">Lantai {order.floor}</p>
+                <p className="text-sm text-muted-foreground">
+                  Lantai {order.floor}
+                </p>
               </CardContent>
             </Card>
           )}
