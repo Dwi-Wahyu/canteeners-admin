@@ -11,7 +11,8 @@ export type GenerateBillingInput = z.infer<typeof GenerateBillingSchema>;
 export type BillingSummary = {
   order_count: number;
   total_order_amount: number;
-  total_commission: number;
-  total_refund: number;
-  grand_total: number;
+  commission_total: number;
+  subsidy_total: number;
+  refund_total: number;
+  net_total: number;
 };

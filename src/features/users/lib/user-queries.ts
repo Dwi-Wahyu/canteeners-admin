@@ -9,9 +9,13 @@ export async function getUsers() {
 }
 
 export async function getShopOwners() {
-  return await prisma.user.findMany({
-    where: {
-      role: "SHOP_OWNER",
+  return await prisma.owner.findMany({
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 }

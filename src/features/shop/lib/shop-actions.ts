@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { CreateShopInput } from "./shop-types";
+import { Prisma } from "@/generated/prisma";
 
 export async function createShop(payload: CreateShopInput) {
   try {
@@ -15,8 +16,18 @@ export async function createShop(payload: CreateShopInput) {
   } catch (error) {
     console.log(error);
 
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2003") {
+        return {
+          success: false,
+          message: "Kantin atau Pemilik tidak ditemukan.",
+        };
+      }
+    }
+
     return {
       success: false,
+      message: "Gagal membuat kedai. Silakan coba lagi.",
     };
   }
 }

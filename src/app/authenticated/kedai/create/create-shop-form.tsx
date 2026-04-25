@@ -19,11 +19,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
 
-import { put } from "@vercel/blob";
 import { createShop } from "@/features/shop/lib/shop-actions";
 import { toast } from "sonner";
+import { getCanteens } from "@/features/canteen/lib/canteen-queries";
 
-export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
+export default function CreateShopForm({
+  owners,
+  canteens,
+}: {
+  owners: GetShopOwners;
+  canteens: Awaited<ReturnType<typeof getCanteens>>;
+}) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +38,7 @@ export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
     defaultValues: {
       name: "",
       owner_id: "",
-      canteen_id: 4, // kantin kudapan
+      canteen_id: undefined,
       image_url: "",
     },
   });
@@ -65,11 +71,20 @@ export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
         form.setError("image_url", {
           message: "Gagal mengunggah file melalui API.",
         });
+        setIsLoading(false);
         return;
       }
 
       const uploadResult = await uploadResponse.json();
-      const filename = uploadResult.data.filename;
+      const filename = uploadResult.data?.filename;
+
+      if (!filename) {
+        form.setError("image_url", {
+          message: "API tidak mengembalikan nama file.",
+        });
+        setIsLoading(false);
+        return;
+      }
 
       const formDataWithImage = { ...data, image_url: filename };
 
@@ -81,6 +96,8 @@ export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
       if (result.success) {
         form.reset();
         toast.success("Berhasil input kedai");
+      } else {
+        toast.error(result.message || "Gagal input kedai");
       }
     } catch (error) {
       console.error("Gagal mengunggah file:", error);
@@ -125,14 +142,44 @@ export default function CreateShopForm({ owners }: { owners: GetShopOwners }) {
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel htmlFor="role">Pemilik</FieldLabel>
 
-            <Select defaultValue={field.value} onValueChange={field.onChange}>
+            <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Pemilik" />
+                <SelectValue placeholder="Pilih Pemilik" />
               </SelectTrigger>
               <SelectContent id="role">
                 {owners.map((owner) => (
                   <SelectItem key={owner.id} value={owner.id}>
-                    {owner.name}
+                    {owner.user.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {fieldState.error?.message && (
+              <FieldError>{fieldState.error?.message}</FieldError>
+            )}
+          </Field>
+        )}
+      />
+
+      <Controller
+        name="canteen_id"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="canteen">Kantin</FieldLabel>
+
+            <Select
+              value={field.value?.toString()}
+              onValueChange={(value) => field.onChange(parseInt(value))}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Pilih Kantin" />
+              </SelectTrigger>
+              <SelectContent id="canteen">
+                {canteens.map((canteen) => (
+                  <SelectItem key={canteen.id} value={canteen.id.toString()}>
+                    {canteen.name}
                   </SelectItem>
                 ))}
               </SelectContent>
