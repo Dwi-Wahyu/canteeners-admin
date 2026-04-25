@@ -24,6 +24,14 @@ export type FinancialMetrics = {
   totalSubsidy: number;
   totalRefund: number;
   totalNet: number;
+  shopMetrics: {
+    shopId: string;
+    shopName: string;
+    commission: number;
+    subsidy: number;
+    refund: number;
+    net: number;
+  }[];
 };
 
 export type UserTrendData = {

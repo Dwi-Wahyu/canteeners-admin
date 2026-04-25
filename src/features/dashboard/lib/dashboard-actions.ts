@@ -81,6 +81,13 @@ export async function getFinancialMetrics(filters: DashboardFilterInput): Promis
       status: "UNPAID",
       ...(shopId ? { shop_id: shopId } : {}),
     },
+    include: {
+      shop: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   const totalCommission = unpaidBillings.reduce((sum, b) => sum + b.commission_total, 0);
@@ -88,11 +95,34 @@ export async function getFinancialMetrics(filters: DashboardFilterInput): Promis
   const totalRefund = unpaidBillings.reduce((sum, b) => sum + b.refund_total, 0);
   const totalNet = unpaidBillings.reduce((sum, b) => sum + b.net_total, 0);
 
+  // Group by shop
+  const shopMetricsMap = new Map<string, { shopId: string; shopName: string; commission: number; subsidy: number; refund: number; net: number }>();
+
+  unpaidBillings.forEach(billing => {
+    const existing = shopMetricsMap.get(billing.shop_id);
+    if (existing) {
+      existing.commission += billing.commission_total;
+      existing.subsidy += billing.subsidy_total;
+      existing.refund += billing.refund_total;
+      existing.net += billing.net_total;
+    } else {
+      shopMetricsMap.set(billing.shop_id, {
+        shopId: billing.shop_id,
+        shopName: billing.shop.name,
+        commission: billing.commission_total,
+        subsidy: billing.subsidy_total,
+        refund: billing.refund_total,
+        net: billing.net_total,
+      });
+    }
+  });
+
   return {
     totalCommission,
     totalSubsidy,
     totalRefund,
     totalNet,
+    shopMetrics: Array.from(shopMetricsMap.values()),
   };
 }
 

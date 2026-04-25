@@ -46,7 +46,7 @@ export async function generateShopBilling(payload: GenerateBillingInput) {
     // Total Komisi = Total Qty Item * 1.000
     const totalQuantity = orderItems.reduce(
       (sum, item) => sum + item.quantity,
-      0
+      0,
     );
     const totalCommission = totalQuantity * FIXED_COMMISSION_PER_ITEM;
 
@@ -65,6 +65,7 @@ export async function generateShopBilling(payload: GenerateBillingInput) {
         subsidy_total: 0,
         refund_total: totalRefundDeduction,
         net_total: grandTotal,
+
         status: "UNPAID",
       },
     });
@@ -79,7 +80,7 @@ export async function generateShopBilling(payload: GenerateBillingInput) {
 
 export async function updateBillingStatus(
   id: string,
-  status: "PAID" | "UNPAID"
+  status: "PAID" | "UNPAID",
 ) {
   try {
     await prisma.shopBilling.update({
