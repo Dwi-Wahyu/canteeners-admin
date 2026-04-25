@@ -74,35 +74,25 @@ export async function getSummaryMetrics(filters: DashboardFilterInput): Promise<
 }
 
 export async function getFinancialMetrics(filters: DashboardFilterInput): Promise<FinancialMetrics> {
-  const dateRange = getDateRange(filters.range, filters.date);
   const shopId = filters.shopId && filters.shopId !== "all" ? filters.shopId : undefined;
 
-  const [orderItems, unpaidBillings] = await Promise.all([
-    prisma.orderItem.findMany({
-      where: {
-        order: {
-          created_at: dateRange,
-          status: "COMPLETED",
-          ...(shopId ? { shop_id: shopId } : {}),
-        },
-      },
-      select: { quantity: true },
-    }),
-    prisma.shopBilling.findMany({
-      where: {
-        status: "UNPAID",
-        ...(shopId ? { shop_id: shopId } : {}),
-      },
-      select: { total: true },
-    }),
-  ]);
+  const unpaidBillings = await prisma.shopBilling.findMany({
+    where: {
+      status: "UNPAID",
+      ...(shopId ? { shop_id: shopId } : {}),
+    },
+  });
 
-  const totalServiceFee = orderItems.reduce((sum, item) => sum + item.quantity * 1000, 0);
-  const totalDebt = unpaidBillings.reduce((sum, billing) => sum + billing.total, 0);
+  const totalCommission = unpaidBillings.reduce((sum, b) => sum + b.commission_total, 0);
+  const totalSubsidy = unpaidBillings.reduce((sum, b) => sum + b.subsidy_total, 0);
+  const totalRefund = unpaidBillings.reduce((sum, b) => sum + b.refund_total, 0);
+  const totalNet = unpaidBillings.reduce((sum, b) => sum + b.net_total, 0);
 
   return {
-    totalServiceFee,
-    totalDebt,
+    totalCommission,
+    totalSubsidy,
+    totalRefund,
+    totalNet,
   };
 }
 
@@ -234,7 +224,6 @@ export async function getPartnerCards(filters: DashboardFilterInput): Promise<Pa
         where: {
           status: "UNPAID",
         },
-        select: { total: true },
       },
     },
   });
@@ -246,7 +235,7 @@ export async function getPartnerCards(filters: DashboardFilterInput): Promise<Pa
       const itemsQty = o.order_items.reduce((s, item) => s + item.quantity, 0);
       return sum + itemsQty * 1000;
     }, 0);
-    const platformDebt = shop.billings.reduce((sum, b) => sum + b.total, 0);
+    const platformDebt = shop.billings.reduce((sum, b) => sum + b.net_total, 0);
 
     return {
       shopId: shop.id,

@@ -19,12 +19,15 @@ import {
   AlertCircle,
   MessagesSquare,
   HandCoins,
+  ClipboardList,
+  ChevronRight,
 } from "lucide-react";
-import Image from "next/image";
 import { format } from "date-fns";
 import { formatRupiah } from "@/helper/format-rupiah";
 import NavButton from "@/components/nav-button";
 import { getShopDetail } from "@/features/shop/lib/shop-queries";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function ShopDetailClient({
   shop,
@@ -37,14 +40,21 @@ export default function ShopDetailClient({
     SUSPENDED: "bg-red-100 text-red-800 border-red-200",
   };
 
+  const orderStatusColors: Record<string, string> = {
+    PENDING_CONFIRMATION: "bg-yellow-100 text-yellow-800",
+    WAITING_PAYMENT: "bg-blue-100 text-blue-800",
+    PROCESSING: "bg-purple-100 text-purple-800",
+    COMPLETED: "bg-green-100 text-green-800",
+    CANCELLED: "bg-red-100 text-red-800",
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row gap-6 items-start border-b pb-8">
         <div className="relative w-full md:w-48 aspect-square rounded-xl overflow-hidden shadow-md border">
-          <Image
+          <img
             src={getImageUrl("/shop/" + shop.image_url)}
             alt={shop.name}
-            fill
             className="object-cover"
           />
         </div>
@@ -90,7 +100,7 @@ export default function ShopDetailClient({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Kolom Kiri: Detail Info */}
+        {/* Kolom Kiri: Detail Info & Orders */}
         <div className="md:col-span-2 space-y-6">
           <Card>
             <CardHeader>
@@ -131,6 +141,59 @@ export default function ShopDetailClient({
           </Card>
 
           <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-primary" /> 5 Order Terakhir
+              </CardTitle>
+              <Button variant="ghost" size="sm" asChild className="text-primary hover:text-primary/80">
+                <Link href={`/authenticated/order?shop_id=${shop.id}`} className="flex items-center gap-1">
+                  Lihat Semua <ChevronRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {shop.orders.map((order) => (
+                  <div
+                    key={order.id}
+                    className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/30 transition-colors"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-bold">
+                          {order.customer.user.name}
+                        </p>
+                        <Badge variant="secondary" className={`text-[10px] py-0 px-1.5 ${orderStatusColors[order.status] || ""}`}>
+                          {order.status.replace("_", " ")}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {format(new Date(order.created_at), "dd MMM yyyy, HH:mm")}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-primary">
+                        {formatRupiah(order.total_price)}
+                      </p>
+                      <Link 
+                        href={`/authenticated/order/${order.id}`}
+                        className="text-[10px] text-muted-foreground hover:underline"
+                      >
+                        Lihat Detail
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+                {shop.orders.length === 0 && (
+                  <div className="text-center py-6 text-muted-foreground">
+                    <p>Belum ada order untuk kedai ini.</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-primary" /> Metode
@@ -139,7 +202,7 @@ export default function ShopDetailClient({
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {shop.payments.map((p: any) => (
+                {shop.payments.map((p) => (
                   <Badge
                     key={p.method}
                     variant="secondary"
@@ -195,13 +258,13 @@ export default function ShopDetailClient({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {shop.billings.map((bill: any) => (
+              {shop.billings.map((bill) => (
                 <div
                   key={bill.id}
                   className="flex justify-between items-center text-sm border-b pb-2 last:border-0"
                 >
                   <div>
-                    <p className="font-medium">{formatRupiah(bill.total)}</p>
+                    <p className="font-medium">{formatRupiah(bill.net_total)}</p>
                     <p className="text-[10px] text-muted-foreground">
                       {format(new Date(bill.start_date), "dd MMM")}
                     </p>

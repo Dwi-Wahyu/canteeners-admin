@@ -19,6 +19,7 @@ import {
   FileText,
   HelpCircle,
   Image as LucideImage,
+  TicketPercent,
   Truck,
   UserPlus,
 } from "lucide-react";
@@ -59,6 +60,11 @@ export const adminMenu = {
       title: "Banner",
       url: "/authenticated/banner",
       icon: LucideImage,
+    },
+    {
+      title: "Voucher",
+      url: "/authenticated/voucher",
+      icon: TicketPercent,
     },
     {
       title: "Laporan",

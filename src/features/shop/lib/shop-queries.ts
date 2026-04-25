@@ -1,9 +1,17 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { ShopSearchParamsType } from "@/validations/search-params/shop-search-params";
 
-export async function getShops() {
-  return await prisma.shop.findMany();
+export async function getShops(params?: ShopSearchParamsType) {
+  return await prisma.shop.findMany({
+    where: {
+      name: {
+        contains: params?.name || "",
+        mode: "insensitive",
+      },
+    },
+  });
 }
 
 export async function getShopById(id: string) {
@@ -27,6 +35,15 @@ export async function getShopDetail(id: string) {
         orderBy: { start_date: "desc" },
         take: 5, // Mengambil 5 tagihan terakhir
       },
+      orders: {
+        orderBy: { created_at: "desc" },
+        take: 5,
+        include: {
+          customer: {
+            include: { user: true }
+          }
+        }
+      }
     },
   });
 }

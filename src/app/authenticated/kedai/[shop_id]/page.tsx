@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma"; // Sesuaikan dengan path prisma client kamu
 import { notFound } from "next/navigation";
 import ShopDetailClient from "./shop-detail-client";
 import { getShopDetail } from "@/features/shop/lib/shop-queries";

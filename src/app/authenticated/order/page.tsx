@@ -1,7 +1,7 @@
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
-import { Card, CardContent } from "@/components/ui/card";
 import { getOrders } from "@/features/order/lib/order-queries";
 import { OrderSearchParams } from "@/features/order/types/order-search-params";
+import { getShops } from "@/features/shop/lib/shop-queries";
 import { SearchParams } from "nuqs";
 import { Suspense } from "react";
 import { OrderColumns } from "./columns";
@@ -15,17 +15,17 @@ export default async function OrderListPage(props: IndexPageProps) {
   const searchParams = await props.searchParams;
   const search = OrderSearchParams.parse(searchParams);
 
-  const promises = await getOrders(search);
+  const [promises, shops] = await Promise.all([getOrders(search), getShops()]);
 
   return (
     <div>
-      <Card>
-        <CardContent>
-          <Suspense fallback={<DataTableSkeleton columnCount={5} />}>
-            <OrdersTable promises={promises} columns={OrderColumns} />
-          </Suspense>
-        </CardContent>
-      </Card>
+      <Suspense fallback={<DataTableSkeleton columnCount={5} />}>
+        <OrdersTable
+          promises={promises}
+          columns={OrderColumns}
+          shops={shops.map((shop) => ({ label: shop.name, value: shop.id }))}
+        />
+      </Suspense>
     </div>
   );
 }

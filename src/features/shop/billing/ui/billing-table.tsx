@@ -26,7 +26,8 @@ export function BillingTable({ billings, shopId }: Props) {
         <TableHeader>
           <TableRow>
             <TableHead>Periode</TableHead>
-            <TableHead>Komisi (Subtotal)</TableHead>
+            <TableHead>Komisi (Platform)</TableHead>
+            <TableHead>Subsidi Promo</TableHead>
             <TableHead>Refund</TableHead>
             <TableHead>Total Bersih</TableHead>
             <TableHead>Status</TableHead>
@@ -37,7 +38,7 @@ export function BillingTable({ billings, shopId }: Props) {
           {billings.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={6}
+                colSpan={7}
                 className="text-center py-8 text-muted-foreground"
               >
                 Belum ada riwayat tagihan untuk kedai ini.
@@ -50,12 +51,15 @@ export function BillingTable({ billings, shopId }: Props) {
                   {format(new Date(item.start_date), "dd MMM")} -{" "}
                   {format(new Date(item.end_date), "dd MMM yyyy")}
                 </TableCell>
-                <TableCell>{formatRupiah(item.subtotal)}</TableCell>
+                <TableCell>{formatRupiah(item.commission_total)}</TableCell>
+                <TableCell className="text-orange-600">
+                  {formatRupiah(item.subsidy_total)}
+                </TableCell>
                 <TableCell className="text-destructive">
-                  -{formatRupiah(item.refund)}
+                  -{formatRupiah(item.refund_total)}
                 </TableCell>
                 <TableCell className="font-bold">
-                  {formatRupiah(item.total)}
+                  {formatRupiah(item.net_total)}
                 </TableCell>
                 <TableCell>
                   <Badge

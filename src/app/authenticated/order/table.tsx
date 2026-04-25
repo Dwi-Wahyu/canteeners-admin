@@ -3,21 +3,24 @@
 import { useDataTable } from "@/hooks/use-data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table/data-table";
-import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
 import {
   GetOrdersTableDataResponseType,
   OrdersTableDataType,
 } from "@/features/order/types/order-queries-return-types";
+import { Option } from "@/types/data-table";
+import { OrderFilters } from "@/features/order/ui/order-filters";
 
 export default function OrdersTable({
   promises,
   columns,
+  shops,
 }: {
   promises: GetOrdersTableDataResponseType;
   columns: ColumnDef<OrdersTableDataType>[];
+  shops: Option[];
 }) {
-  const { data, filtered, pageCount } = promises;
+  const { data, pageCount } = promises;
 
   const { table } = useDataTable({
     data,
@@ -35,10 +38,13 @@ export default function OrdersTable({
 
   return (
     <DataTable table={table}>
-      <div className="flex justify-between w-full">
-        <h1 className="text-xl font-semibold mb-4">Riwayat Order</h1>
+      <div className="flex flex-col gap-4 mb-4">
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-semibold">Riwayat Order</h1>
+          <DataTableSortList table={table} />
+        </div>
 
-        <DataTableSortList table={table} />
+        <OrderFilters shops={shops} />
       </div>
     </DataTable>
   );

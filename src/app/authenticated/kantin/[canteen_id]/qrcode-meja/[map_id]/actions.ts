@@ -10,15 +10,15 @@ import { LocalStorageService } from "@/services/storage";
 export async function createNewTableQRCode({
   previousTableNumber,
   canteen_id,
+  canteen_slug,
   map_id,
   floor,
-  baseUrl,
 }: {
   previousTableNumber: number;
   canteen_id: number;
+  canteen_slug: string;
   map_id: number;
   floor: number;
-  baseUrl: string;
 }): Promise<ServerActionReturn<void>> {
   try {
     const storageService = new LocalStorageService();
@@ -29,7 +29,7 @@ export async function createNewTableQRCode({
     params.set("floor", floor.toString());
     params.set("table_number", nextTableNumber.toString());
 
-    const fullUrl = `${baseUrl}/dashboard-pelanggan/kantin/${canteen_id}/pilih-meja?${params.toString()}`;
+    const fullUrl = `${process.env.NEXT_PUBLIC_MAIN_URL}/kantin/${canteen_slug}?${params.toString()}`;
 
     // Generate QR Code Buffer
     const qrBuffer = await QRCode.toBuffer(fullUrl, {
@@ -43,9 +43,13 @@ export async function createNewTableQRCode({
     });
 
     // Create File object from Buffer to be uploaded
-    const file = new File([new Uint8Array(qrBuffer)], `qrcode-${nextTableNumber}.png`, {
-      type: "image/png",
-    });
+    const file = new File(
+      [new Uint8Array(qrBuffer)],
+      `qrcode-${nextTableNumber}.png`,
+      {
+        type: "image/png",
+      },
+    );
 
     // Upload to storage service
     const filename = await storageService.uploadImage(file, "table-qrcode");
@@ -83,33 +87,46 @@ export async function createNewTableQRCode({
   }
 }
 
-export async function chooseCustomerTable({
-  customer_id,
+export async function deleteTableQRCode({
+  id,
+  image_url,
   canteen_id,
-  floor,
-  table_number,
+  map_id,
 }: {
-  customer_id: string;
-  floor: number;
-  table_number: number;
+  id: number;
+  image_url: string;
   canteen_id: number;
+  map_id: number;
 }): Promise<ServerActionReturn<void>> {
   try {
-    await prisma.customer.update({
-      where: {
-        id: customer_id,
-      },
-      data: {
-        canteen_id,
-        floor,
-        table_number,
-      },
+    const storageService = new LocalStorageService();
+
+    await prisma.$transaction(async (tx) => {
+      // Delete the QR Code entry
+      await tx.tableQRCode.delete({
+        where: { id },
+      });
+
+      // Decrement table_count in CanteenMap
+      await tx.canteenMap.update({
+        where: { id: map_id },
+        data: {
+          table_count: {
+            decrement: 1,
+          },
+        },
+      });
     });
 
-    return successResponse(undefined, "Sukses mencatat meja");
+    // Delete from storage service
+    await storageService.deleteFile(image_url, "table-qrcode");
+
+    revalidatePath(`/authenticated/kantin/${canteen_id}/qrcode-meja/${map_id}`);
+
+    return successResponse(undefined, "Berhasil menghapus QR Code");
   } catch (error) {
     console.log(error);
 
-    return errorResponse("Terjadi kesalahan");
+    return errorResponse("Terjadi kesalahan saat menghapus QR Code");
   }
 }

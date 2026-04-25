@@ -41,6 +41,7 @@ export async function getCanteenMap(id: number) {
         select: {
           name: true,
           id: true,
+          slug: true,
         },
       },
       qrcodes: {

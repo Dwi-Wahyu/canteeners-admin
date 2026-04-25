@@ -23,10 +23,8 @@ import { getImageUrl } from "@/helper/get-image-url";
 
 export default function QrcodeMejaClient({
   map,
-  baseUrl,
 }: {
   map: NonNullable<Awaited<ReturnType<typeof getCanteenMap>>>;
-  baseUrl: string;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -36,10 +34,10 @@ export default function QrcodeMejaClient({
       try {
         const result = await createNewTableQRCode({
           canteen_id: map.canteen_id,
+          canteen_slug: map.canteen.slug!,
           floor: map.floor,
           map_id: map.id,
           previousTableNumber: map.qrcodes.length,
-          baseUrl,
         });
 
         if (result.success) {

@@ -4,9 +4,19 @@ import { getImageUrl } from "@/helper/get-image-url";
 import { PlusCircle, Store } from "lucide-react"; // Ikon tambahan
 import Link from "next/link";
 import NavButton from "@/components/nav-button";
+import { SearchParams } from "nuqs";
+import { ShopSearchParams } from "@/validations/search-params/shop-search-params";
+import { ShopFilter } from "@/features/shop/ui/shop-filter";
 
-export default async function KedaiPage() {
-  const shops = await getShops();
+interface KedaiPageProps {
+  searchParams: Promise<SearchParams>;
+}
+
+export default async function KedaiPage(props: KedaiPageProps) {
+  const searchParams = await props.searchParams;
+  const search = ShopSearchParams.parse(searchParams);
+  
+  const shops = await getShops(search);
 
   return (
     <div className="container mx-auto p-6 space-y-8">
@@ -21,10 +31,13 @@ export default async function KedaiPage() {
           </p>
         </div>
 
-        <NavButton href={"/authenticated/kedai/create"}>
-          <PlusCircle />
-          Tambah Kedai
-        </NavButton>
+        <div className="flex items-center gap-2">
+            <ShopFilter />
+            <NavButton href={"/authenticated/kedai/create"}>
+            <PlusCircle />
+            Tambah Kedai
+            </NavButton>
+        </div>
       </div>
 
       {shops.length > 0 ? (
@@ -60,7 +73,7 @@ export default async function KedaiPage() {
         <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed rounded-xl">
           <Store className="w-12 h-12 text-muted-foreground mb-4" />
           <p className="text-xl font-medium text-muted-foreground">
-            Belum ada kedai terdaftar
+            {search.name ? `Tidak ada kedai dengan nama "${search.name}"` : "Belum ada kedai terdaftar"}
           </p>
           <Link
             href="/authenticated/kedai/create"

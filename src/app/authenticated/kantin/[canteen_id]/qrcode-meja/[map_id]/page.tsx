@@ -19,7 +19,6 @@ export default async function QrcodeMeja({
   return (
     <QrcodeMejaClient
       map={map}
-      baseUrl={process.env.NEXT_PUBLIC_BACKEND_URL!}
     />
   );
 }

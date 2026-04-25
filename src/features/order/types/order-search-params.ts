@@ -9,6 +9,9 @@ export const OrderSearchParams = createSearchParamsCache({
   perPage: parseAsInteger.withDefault(10),
   name: parseAsString.withDefault(""),
   createdAt: parseAsString.withDefault(""),
+  shop_id: parseAsString.withDefault(""),
+  status: parseAsString.withDefault(""),
+  payment_method: parseAsString.withDefault(""),
 });
 
 export type OrderSearchParamsInput = {
@@ -16,4 +19,7 @@ export type OrderSearchParamsInput = {
   perPage: number;
   name: string;
   createdAt: string;
+  shop_id: string;
+  status: string;
+  payment_method: string;
 };

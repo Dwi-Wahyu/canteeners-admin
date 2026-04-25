@@ -3,10 +3,43 @@ import { extname } from "path";
 export interface StorageService {
   uploadImage(file: File, subfolder: string): Promise<string>;
   uploadMedia(file: File, subfolder: string): Promise<string>;
+  deleteFile(filename: string, subfolder: string): Promise<void>;
 }
 
 export class LocalStorageService implements StorageService {
   private backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  /**
+   * Menghapus file dari penyimpanan remote di backend melalui API.
+   * 
+   * @param filename Nama file yang akan dihapus.
+   * @param subfolder Subfolder tempat file berada.
+   */
+  public async deleteFile(filename: string, subfolder: string): Promise<void> {
+    if (!this.backendUrl) {
+      throw new Error(
+        "NEXT_PUBLIC_BACKEND_URL is not defined in environment variables",
+      );
+    }
+
+    try {
+      // Menggabungkan subfolder dan filename, lalu di-encode agar dianggap sebagai satu parameter :filename oleh NestJS
+      const fullPath = `${subfolder}/${filename}`;
+      const response = await fetch(`${this.backendUrl}/files/${encodeURIComponent(fullPath)}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Delete failed with status ${response.status}: ${errorText}`,
+        );
+      }
+    } catch (error: any) {
+      console.error("Error deleting from backend:", error);
+      throw new Error(`Gagal menghapus file: ${error.message}`);
+    }
+  }
 
   /**
    * Mengunggah gambar ke penyimpanan remote di backend melalui API.

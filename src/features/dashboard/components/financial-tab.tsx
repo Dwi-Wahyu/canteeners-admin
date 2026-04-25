@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FinancialMetrics, DashboardRange } from "../lib/dashboard-schema";
 import { formatRupiah } from "@/helper/format-rupiah";
-import { Wallet, Landmark } from "lucide-react";
+import { Wallet, Landmark, TicketPercent, ReceiptReturn } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { getFinancialMetrics } from "../lib/dashboard-actions";
 
@@ -25,8 +25,8 @@ export function FinancialTab({ range, shopId }: FinancialTabProps) {
 
   if (!metrics && isPending) {
     return (
-      <div className="grid gap-4 md:grid-cols-2">
-        {[...Array(2)].map((_, i) => (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
           <Card key={i} className="animate-pulse h-32" />
         ))}
       </div>
@@ -36,18 +36,48 @@ export function FinancialTab({ range, shopId }: FinancialTabProps) {
   if (!metrics) return null;
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Total Revenue Stream (Service Fee)
+            Total Komisi Platform
           </CardTitle>
-          <Wallet className="h-4 w-4 text-green-600" />
+          <Wallet className="h-4 w-4 text-primary" />
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold">{formatRupiah(metrics.totalServiceFee)}</div>
+          <div className="text-2xl font-bold">{formatRupiah(metrics.totalCommission)}</div>
           <p className="text-xs text-muted-foreground mt-1">
-            Total biaya layanan Rp 1.000 per item
+            Total biaya layanan dari mitra
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            Subsidi Promo Platform
+          </CardTitle>
+          <TicketPercent className="h-4 w-4 text-orange-500" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{formatRupiah(metrics.totalSubsidy)}</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Hutang subsidi promo ke mitra
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            Total Refund
+          </CardTitle>
+          <ReceiptReturn className="h-4 w-4 text-destructive" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{formatRupiah(metrics.totalRefund)}</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Total pengembalian dana
           </p>
         </CardContent>
       </Card>
@@ -55,14 +85,16 @@ export function FinancialTab({ range, shopId }: FinancialTabProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Settlement & Debt (Utang Platform)
+            Net Settlement
           </CardTitle>
-          <Landmark className="h-4 w-4 text-red-600" />
+          <Landmark className="h-4 w-4 text-green-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold">{formatRupiah(metrics.totalDebt)}</div>
+          <div className="text-2xl font-bold">{formatRupiah(metrics.totalNet)}</div>
           <p className="text-xs text-muted-foreground mt-1">
-            Total dana yang belum ditransfer ke mitra
+            {metrics.totalNet >= 0 
+              ? "Piutang yang harus ditagih" 
+              : "Hutang yang harus dibayar"}
           </p>
         </CardContent>
       </Card>

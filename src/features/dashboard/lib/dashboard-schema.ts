@@ -20,8 +20,10 @@ export type SummaryMetrics = {
 };
 
 export type FinancialMetrics = {
-  totalServiceFee: number;
-  totalDebt: number;
+  totalCommission: number;
+  totalSubsidy: number;
+  totalRefund: number;
+  totalNet: number;
 };
 
 export type UserTrendData = {

@@ -1,14 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { SquareArrowOutUpRight, SquarePen } from "lucide-react";
+import { SquareArrowOutUpRight } from "lucide-react";
 import { OrdersTableDataType } from "@/features/order/types/order-queries-return-types";
 import { formatRupiah } from "@/helper/format-rupiah";
 import { orderStatusMapping } from "@/constants/order-status-mapping";
 import { Badge } from "@/components/ui/badge";
 import NavButton from "@/components/nav-button";
+import { calculateCommission } from "@/helper/pricing-helper";
 
 export const OrderColumns: ColumnDef<OrdersTableDataType>[] = [
   {
@@ -36,12 +35,41 @@ export const OrderColumns: ColumnDef<OrdersTableDataType>[] = [
     },
   },
   {
+    header: "Komisi",
+    cell({ row }) {
+      const { order_items, status } = row.original;
+
+      if (
+        status === "CANCELLED" ||
+        status === "REJECTED" ||
+        status === "PAYMENT_REJECTED"
+      ) {
+        return <h1 className="font-bold text-muted-foreground">{formatRupiah(0)}</h1>;
+      }
+
+      const totalQty = order_items.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
+      const commission = calculateCommission(totalQty);
+
+      return (
+        <h1 className="font-bold text-primary">{formatRupiah(commission)}</h1>
+      );
+    },
+  },
+
+  {
     accessorKey: "status",
     header: "Status",
     cell({ row }) {
       const { status } = row.original;
 
-      return <Badge>{orderStatusMapping[status]}</Badge>;
+      return (
+        <Badge>
+          {orderStatusMapping[status as keyof typeof orderStatusMapping]}
+        </Badge>
+      );
     },
   },
   {
@@ -58,18 +86,6 @@ export const OrderColumns: ColumnDef<OrdersTableDataType>[] = [
           >
             <SquareArrowOutUpRight />
           </NavButton>
-
-          {/* <ConfirmationDialog
-            isOpen={isConfirmDialogOpen}
-            onClose={() => setIsConfirmDialogOpen(false)}
-            onConfirm={handleDeleteEmployee}
-            title="Konfirmasi Penghapusan"
-            message={`Apakah Anda yakin ingin menghapus karyawan "${employee.name}" ? Tindakan ini tidak dapat dibatalkan.`}
-            confirmButtonText={isDeleting ? "Menghapus..." : "Hapus"}
-            cancelButtonText="Batal"
-            isLoading={isDeleting}
-            confirmButtonVariant="destructive"
-          /> */}
         </div>
       );
     },
