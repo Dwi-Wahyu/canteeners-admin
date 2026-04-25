@@ -61,9 +61,10 @@ export async function generateShopBilling(payload: GenerateBillingInput) {
         shop_id: validated.shop_id,
         start_date: validated.start_date,
         end_date: validated.end_date,
-        subtotal: totalCommission,
-        refund: totalRefundDeduction,
-        total: grandTotal,
+        commission_total: totalCommission,
+        subsidy_total: 0,
+        refund_total: totalRefundDeduction,
+        net_total: grandTotal,
         status: "UNPAID",
       },
     });
