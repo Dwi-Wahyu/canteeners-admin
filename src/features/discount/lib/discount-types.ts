@@ -12,6 +12,26 @@ export type GetDiscountTableDataResponseType = {
   pageCount: number;
 };
 
+export type DiscountOwnerTableDataType = {
+  id: string;
+  is_used: boolean;
+  used_at: Date | null;
+  acquired_at: Date;
+  customer: {
+    id: string;
+    user: {
+      name: string;
+      username: string | null;
+      avatar: string;
+    };
+  };
+};
+
+export type GetDiscountOwnerTableDataResponseType = {
+  data: DiscountOwnerTableDataType[];
+  pageCount: number;
+};
+
 export const CreateDiscountSchema = z.object({
   name: z.string().min(1, "Nama voucher harus diisi"),
   description: z.string().optional(),

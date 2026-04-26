@@ -85,3 +85,20 @@ export async function updateDiscount(id: string, data: CreateDiscountInput) {
     return { success: false, message: "Gagal memperbarui discount" };
   }
 }
+
+export async function revokeVoucherFromCustomer(customerDiscountId: string) {
+  try {
+    const customerDiscount = await prisma.customerDiscount.delete({
+      where: { id: customerDiscountId },
+      include: {
+        discount: true,
+      },
+    });
+
+    revalidatePath(`/authenticated/voucher/${customerDiscount.discount_id}/owners`);
+    return { success: true, message: "Voucher berhasil dicabut dari pelanggan" };
+  } catch (error) {
+    console.error("Error revoking voucher:", error);
+    return { success: false, message: "Gagal mencabut voucher" };
+  }
+}

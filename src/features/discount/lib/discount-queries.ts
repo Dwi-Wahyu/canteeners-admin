@@ -28,3 +28,19 @@ export async function getDiscountById(id: string) {
     where: { id },
   });
 }
+
+export async function getDiscountOwners(discountId: string) {
+  return await prisma.customerDiscount.findMany({
+    where: { discount_id: discountId },
+    include: {
+      customer: {
+        include: {
+          user: true,
+        },
+      },
+    },
+    orderBy: {
+      acquired_at: "desc",
+    },
+  });
+}

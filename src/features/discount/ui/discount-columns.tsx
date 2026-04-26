@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Trash, Power, PowerOff, Pencil } from "lucide-react";
+import { Trash, Power, PowerOff, Pencil, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteDiscount, toggleDiscountStatus } from "../lib/discount-actions";
@@ -83,6 +83,11 @@ export const DiscountColumns: ColumnDef<DiscountTableDataType>[] = [
 
       return (
         <div className="flex gap-2">
+          <Button variant="outline" size="sm" asChild title="Daftar Pemilik">
+            <Link href={`/authenticated/voucher/${discount.id}/owners`}>
+              <Users className="h-4 w-4" />
+            </Link>
+          </Button>
           <Button variant="outline" size="sm" asChild>
             <Link href={`/authenticated/voucher/edit/${discount.id}`}>
               <Pencil className="h-4 w-4" />
