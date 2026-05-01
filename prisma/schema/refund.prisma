@@ -1,32 +1,57 @@
 model Refund {
-  id                     String                 @id @default(uuid())
-  order_id               String                 @unique
-  complaint_proof_url    String?
-  disbursement_proof_url String?
-  disbursement_mode      RefundDisbursementMode
-  amount                 Float
-  reason                 RefundReason
-  status                 RefundStatus           @default(PENDING)
-  description            String?
-  requested_at           DateTime               @default(now())
-  processed_at           DateTime?
-  rejected_reason        String?
-  escalated_reason       String?
-  affected_items         RefundItem[]
-  order                  Order                  @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  id       String @id @default(uuid())
+  order    Order  @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  order_id String @unique
+
+  complaint_proof_url    String? // bukti complaint   
+  disbursement_proof_url String? // bukti tf refund sudah dibayar
+  disbursement_mode      RefundDisbursementMode // mode pengembalian dana
+
+  amount      Float // jumlah refund
+  reason      RefundReason
+  status      RefundStatus @default(PENDING)
+  description String?      @db.Text
+
+  requested_at     DateTime  @default(now())
+  processed_at     DateTime?
+  rejected_reason  String?
+  escalated_reason String? // alasan dieskalasi ke admin
+
+  affected_items RefundItem[] // relasi ke item yang bermasalah
+  history        RefundHistory[] // riwayat status refund
 
   @@index([order_id])
   @@index([status])
   @@map("refunds")
 }
 
+model RefundHistory {
+  id        String   @id @default(uuid())
+  refund_id String
+  refund    Refund   @relation(fields: [refund_id], references: [id], onDelete: Cascade)
+
+  status RefundStatus
+  note   String?      @db.Text
+
+  actor_id   String? // ID User (Admin/Shop) yang melakukan aksi
+  actor_name String? // Nama User saat aksi dilakukan (untuk snapshot)
+  actor_role Role?   // Role User saat aksi dilakukan
+
+  created_at DateTime @default(now())
+
+  @@index([refund_id])
+  @@map("refund_histories")
+}
+
 model RefundItem {
-  id            String    @id @default(uuid())
+  id            String @id @default(uuid())
   refund_id     String
   order_item_id String
-  created_at    DateTime  @default(now())
-  order_item    OrderItem @relation(fields: [order_item_id], references: [id], onDelete: Cascade)
-  refund        Refund    @relation(fields: [refund_id], references: [id], onDelete: Cascade)
+
+  refund     Refund    @relation(fields: [refund_id], references: [id], onDelete: Cascade)
+  order_item OrderItem @relation(fields: [order_item_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
 
   @@unique([refund_id, order_item_id])
   @@index([refund_id])
@@ -35,18 +60,18 @@ model RefundItem {
 }
 
 enum RefundReason {
-  LATE_DELIVERY
-  WRONG_ORDER
-  DAMAGED_FOOD
-  MISSING_ITEM
-  OTHER
+  LATE_DELIVERY // terlambat > estimasi
+  WRONG_ORDER // salah pesanan
+  DAMAGED_FOOD // rusak
+  MISSING_ITEM // kurang item
+  OTHER // lain-lain
 }
 
 enum RefundStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  PROCESSED
-  CANCELLED
-  ESCALATED
+  PENDING // menunggu proses
+  APPROVED // disetujui
+  REJECTED // ditolak
+  PROCESSED // uang sudah dikembalikan (butuh konfirmasi user)
+  CANCELLED // dibatalkan user
+  ESCALATED // dieskalasi ke admin karena deteksi fraud
 }

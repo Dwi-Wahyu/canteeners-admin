@@ -10,6 +10,7 @@ model Order {
   shop_id           String
   estimation        Int? // dalam menit
   payment_proof_url String?
+  confirmed_at      DateTime? // waktu ketika shop menyetujui order (masuk ke WAITING_PAYMENT atau WAITING_SHOP_CONFIRMATION)
   processed_at      DateTime? // waktu ketika order mulai diproses setelah pembayaran di verifikasi
 
   rejected_reason  String?
@@ -85,7 +86,7 @@ model OrderItem {
   quantity     Int
   // Harga Satuan Dasar (Snapshot saat checkout)
   price_at_add Float
-  // Quantity * (price_at_add + 1000 + total_options_price)
+  // Quantity * (price_at_add + total_options_price) + Distributed Commission
   subtotal     Float
   note         String?
 

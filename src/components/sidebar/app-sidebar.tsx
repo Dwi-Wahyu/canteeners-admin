@@ -67,9 +67,23 @@ export const adminMenu = {
       icon: TicketPercent,
     },
     {
-      title: "Laporan",
+      title: "Pusat Laporan",
       url: "/authenticated/laporan",
       icon: AlertCircle,
+      child: [
+        {
+          title: "Laporan",
+          url: "/authenticated/laporan",
+        },
+        {
+          title: "Refund",
+          url: "/authenticated/refund",
+        },
+        {
+          title: "Komplain",
+          url: "/authenticated/komplain",
+        },
+      ],
     },
   ],
   navUser: [

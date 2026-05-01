@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getUserReports } from "@/features/violations/lib/violations-queries";
+import Link from "next/link";
 
 export default async function PelaporanPage() {
   const reports = await getUserReports();
@@ -65,13 +66,17 @@ export default async function PelaporanPage() {
                   {new Date(report.created_at).toLocaleDateString("id-ID")}
                 </td>
                 <td className="px-4 py-4">
-                  <Button size={"sm"}>Detail</Button>
+                  <Button size={"sm"} asChild>
+                    <Link href={`/authenticated/laporan/${report.id}`}>
+                      Detail
+                    </Link>
+                  </Button>
                 </td>
               </tr>
             ))}
             {reports.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                   Tidak ada laporan yang ditemukan.
                 </td>
               </tr>
