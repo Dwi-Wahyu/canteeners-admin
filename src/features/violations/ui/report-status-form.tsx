@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { updateReportStatus } from "@/features/violations/lib/violations-actions";
-import { ReportStatus } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { ReportStatus } from "@/generated/prisma";
 
 interface ReportStatusFormProps {
   reportId: string;

@@ -1,9 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { RefundStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/config/auth";
+import { RefundStatus } from "@/generated/prisma";
 
 export async function updateRefundStatus(
   id: string,
@@ -33,7 +33,9 @@ export async function updateRefundStatus(
           status,
           rejected_reason: status === "REJECTED" ? rejected_reason : null,
           processed_at:
-            status === "PROCESSED" || status === "APPROVED" || status === "REJECTED"
+            status === "PROCESSED" ||
+            status === "APPROVED" ||
+            status === "REJECTED"
               ? new Date()
               : undefined,
         },
@@ -42,7 +44,10 @@ export async function updateRefundStatus(
         data: {
           refund_id: id,
           status,
-          note: status === "REJECTED" ? rejected_reason : `Admin memproses refund ke status ${status}`,
+          note:
+            status === "REJECTED"
+              ? rejected_reason
+              : `Admin memproses refund ke status ${status}`,
           actor_id: session.user.id,
           actor_name: session.user.name,
         },

@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { RefundStatus } from "@prisma/client";
 
 export async function getEscalatedRefunds() {
   return await prisma.refund.findMany({

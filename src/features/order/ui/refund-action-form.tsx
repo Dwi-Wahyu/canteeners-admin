@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { updateRefundStatus } from "@/features/order/lib/refund-actions";
-import { RefundStatus } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -25,6 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { RefundStatus } from "@/generated/prisma";
 
 interface RefundActionFormProps {
   refundId: string;
@@ -95,14 +95,20 @@ export function RefundActionForm({
             <AlertDialogDescription>
               Tindakan ini akan mengubah status refund menjadi{" "}
               <span className="font-bold">
-                {status === "APPROVED" ? "DISETUJUI" : status === "REJECTED" ? "DITOLAK" : "ESCALATED"}
+                {status === "APPROVED"
+                  ? "DISETUJUI"
+                  : status === "REJECTED"
+                    ? "DITOLAK"
+                    : "ESCALATED"}
               </span>
               . Keputusan admin bersifat final dalam sistem ini.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Batal</AlertDialogCancel>
-            <AlertDialogAction onClick={handleSubmit}>Lanjutkan</AlertDialogAction>
+            <AlertDialogAction onClick={handleSubmit}>
+              Lanjutkan
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

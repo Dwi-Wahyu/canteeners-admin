@@ -1,10 +1,14 @@
 "use server";
 
+import { ReportStatus } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
-import { ReportStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function updateReportStatus(id: string, status: ReportStatus, admin_note?: string) {
+export async function updateReportStatus(
+  id: string,
+  status: ReportStatus,
+  admin_note?: string,
+) {
   try {
     await prisma.userReport.update({
       where: { id },
