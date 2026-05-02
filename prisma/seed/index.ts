@@ -3,6 +3,7 @@ import { seedCanteens } from "./seed-canteens";
 import { seedCategories } from "./seed-categories";
 import { seedShops } from "./seed-shops";
 import { seedCustomers } from "./seed-customers";
+import { seedSuperAdmin } from "./seed-superadmin";
 import { prisma } from "@/lib/prisma";
 
 async function main() {
@@ -23,6 +24,7 @@ async function main() {
 
   await seedCanteens();
   await seedCategories();
+  await seedSuperAdmin();
   await seedUsers();
   await seedShops();
   await seedCustomers();

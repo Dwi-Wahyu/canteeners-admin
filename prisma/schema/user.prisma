@@ -55,6 +55,7 @@ enum FcmPlatform {
 }
 
 enum Role {
+    SUPERADMIN
     ADMIN
     CUSTOMER
     SHOP_OWNER
@@ -105,6 +106,9 @@ model Customer {
     floor         Int?
     table_number  Int?
     last_visit_at DateTime?
+
+    has_used_referral  Boolean @default(false)
+    used_referral_code String?
 
     referral_code String? @unique
 

@@ -19,6 +19,7 @@ import {
   FileText,
   HelpCircle,
   Image as LucideImage,
+  MessageSquareQuote,
   TicketPercent,
   Truck,
   UserPlus,
@@ -60,6 +61,11 @@ export const adminMenu = {
       title: "Banner",
       url: "/authenticated/banner",
       icon: LucideImage,
+    },
+    {
+      title: "Testimoni",
+      url: "/authenticated/testimony",
+      icon: MessageSquareQuote,
     },
     {
       title: "Voucher",
@@ -138,6 +144,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return;
   }
 
+  const role = data.user.role;
+
+  const filteredNavMain = adminMenu.navMain.filter((item) => {
+    if (role === "SUPERADMIN") return true;
+    if (role === "ADMIN") {
+      return !["Kantin", "Kedai", "Testimoni"].includes(item.title);
+    }
+    return false;
+  });
+
+  const filteredNavUser = adminMenu.navUser.filter((item) => {
+    if (role === "SUPERADMIN") return true;
+    // ADMIN cannot see user management
+    return false;
+  });
+
+  const filteredNavSetting = adminMenu.navSetting.filter((item) => {
+    if (role === "SUPERADMIN") return true;
+    // ADMIN cannot see settings/FAQ
+    return false;
+  });
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -155,11 +183,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="pb-10">
-        <NavMenu items={adminMenu.navMain} groupLabel="UTAMA" />
+        <NavMenu items={filteredNavMain} groupLabel="UTAMA" />
 
-        <NavMenu items={adminMenu.navUser} groupLabel="PENGGUNA" />
+        {filteredNavUser.length > 0 && (
+          <NavMenu items={filteredNavUser} groupLabel="PENGGUNA" />
+        )}
 
-        <NavMenu items={adminMenu.navSetting} groupLabel="PENGATURAN" />
+        {filteredNavSetting.length > 0 && (
+          <NavMenu items={filteredNavSetting} groupLabel="PENGATURAN" />
+        )}
       </SidebarContent>
     </Sidebar>
   );

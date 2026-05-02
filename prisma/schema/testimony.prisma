@@ -16,6 +16,7 @@ model AppTestimony {
   role       String?
   created_at DateTime @default(now())
   rating     Int      @default(5)
+  order      Int      @default(0)
 
   @@map("app_testimonies")
 }

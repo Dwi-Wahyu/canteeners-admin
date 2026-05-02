@@ -7,7 +7,7 @@ declare module "next-auth" {
       username: string;
       name: string;
       avatar: string;
-      role: string;
+      role: "SUPERADMIN" | "ADMIN" | "CUSTOMER" | "SHOP_OWNER";
     };
   }
 
@@ -16,6 +16,6 @@ declare module "next-auth" {
     username: string;
     name: string;
     avatar: string;
-    role: string;
+    role: "SUPERADMIN" | "ADMIN" | "CUSTOMER" | "SHOP_OWNER";
   }
 }

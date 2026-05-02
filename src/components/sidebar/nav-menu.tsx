@@ -18,8 +18,9 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconType } from "@/types/icon";
+import { usePathname } from "next/navigation";
 
 export function NavMenu({
   items,
@@ -37,6 +38,11 @@ export function NavMenu({
   groupLabel: string;
 }) {
   const { linkActive, setLinkActive } = useSidebar();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setLinkActive(pathname);
+  }, [pathname, setLinkActive]);
 
   return (
     <SidebarGroup>

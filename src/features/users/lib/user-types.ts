@@ -10,7 +10,7 @@ export const CreateUserSchema = z.object({
   email: z.string().optional(),
   phone_number: z.string().optional(),
   avatar: z.string(),
-  role: z.enum(["ADMIN", "CUSTOMER", "SHOP_OWNER"]),
+  role: z.enum(["SUPERADMIN", "ADMIN", "CUSTOMER", "SHOP_OWNER"]),
 });
 
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
