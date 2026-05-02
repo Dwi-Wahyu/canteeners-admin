@@ -41,7 +41,7 @@ export function UserTab({ range, shopId }: UserTabProps) {
           {isPending ? (
             <div className="h-full w-full flex items-center justify-center animate-pulse bg-muted rounded" />
           ) : (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis 

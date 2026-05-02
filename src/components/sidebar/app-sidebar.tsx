@@ -116,11 +116,6 @@ export const adminMenu = {
   ],
   navSetting: [
     {
-      title: "Pengaturan Aplikasi",
-      url: "/authenticated/pengaturan-aplikasi",
-      icon: Settings,
-    },
-    {
       title: "FAQ",
       url: "/authenticated/faq",
       icon: HelpCircle,

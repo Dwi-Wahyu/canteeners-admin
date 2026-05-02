@@ -106,7 +106,7 @@ export function TestimonyTable({ initialData }: TestimonyTableProps) {
             ))}
           </TableHeader>
           <TableBody>
-            <SortableContent asChild>
+            <SortableContent withoutSlot>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <SortableItem key={row.id} value={row.id} asChild>
