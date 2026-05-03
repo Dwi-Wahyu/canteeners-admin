@@ -68,13 +68,13 @@ export default function AppTopbar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem asChild>
-              <Link href={"/admin/profil/"}>
+              <Link href={"/authenticated/profil/"}>
                 <CircleUser />
                 Profil
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={"/admin/ganti-password/"}>
+              <Link href={"/authenticated/ganti-password/"}>
                 <Key />
                 Ganti Password
               </Link>

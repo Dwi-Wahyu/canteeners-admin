@@ -14,6 +14,7 @@ import {
   AlertCircle,
   BookUser,
   Building,
+  Calendar,
   ContactRound,
   DollarSign,
   FileText,
@@ -71,6 +72,11 @@ export const adminMenu = {
       title: "Voucher",
       url: "/authenticated/voucher",
       icon: TicketPercent,
+    },
+    {
+      title: "Event",
+      url: "/authenticated/event",
+      icon: Calendar,
     },
     {
       title: "Pusat Laporan",

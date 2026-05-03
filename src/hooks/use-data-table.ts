@@ -178,13 +178,17 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     return filterableColumns.reduce<
       Record<string, Parser<string> | Parser<string[]>>
     >((acc, column) => {
-      if (column.meta?.options) {
-        acc[column.id ?? ""] = parseAsArrayOf(
+      const columnId = column.id ?? (column as any).accessorKey;
+      if (!columnId) return acc;
+
+      const variant = column.meta?.variant;
+      if (column.meta?.options || variant === "dateRange" || variant === "multiSelect") {
+        acc[columnId] = parseAsArrayOf(
           parseAsString,
           ARRAY_SEPARATOR
         ).withOptions(queryStateOptions);
       } else {
-        acc[column.id ?? ""] = parseAsString.withOptions(queryStateOptions);
+        acc[columnId] = parseAsString.withOptions(queryStateOptions);
       }
       return acc;
     }, {});
@@ -239,7 +243,10 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
         const filterUpdates = next.reduce<
           Record<string, string | string[] | null>
         >((acc, filter) => {
-          if (filterableColumns.find((column) => column.id === filter.id)) {
+          const column = filterableColumns.find(
+            (c) => (c.id ?? (c as any).accessorKey) === filter.id
+          );
+          if (column) {
             acc[filter.id] = filter.value as string | string[];
           }
           return acc;

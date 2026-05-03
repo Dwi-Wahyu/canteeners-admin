@@ -7,6 +7,18 @@ import { Eye, SquarePen, Trash } from "lucide-react";
 import { useState } from "react";
 import { UsersTableDataType } from "@/features/users/types/queries-return-types";
 import { getImageUrl } from "@/helper/get-image-url";
+import { deleteUser } from "@/features/users/lib/user-action";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const CustomerColumns: ColumnDef<UsersTableDataType>[] = [
   {
@@ -17,8 +29,8 @@ export const CustomerColumns: ColumnDef<UsersTableDataType>[] = [
 
       return (
         <img
-          className="rounded-lg"
-          src={getImageUrl("/avatar/" + avatar)}
+          className="rounded-lg object-cover aspect-square"
+          src={avatar.startsWith("http") ? avatar : getImageUrl("/avatar/" + avatar)}
           alt={name}
           width={100}
           height={100}
@@ -37,61 +49,71 @@ export const CustomerColumns: ColumnDef<UsersTableDataType>[] = [
   {
     id: "actions",
     cell: function Cell({ row }) {
-      const employee = row.original;
+      const user = row.original;
       const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
       const [isDeleting, setIsDeleting] = useState(false);
 
-      const handleDeleteEmployee = async () => {
+      const handleDeleteUser = async () => {
         setIsDeleting(true);
-        setIsConfirmDialogOpen(false);
-
-        // try {
-        //   const result = await deleteUser(employee.id);
-        //   if (result.success) {
-        //     toast.success(result.message || "Karyawan berhasil dihapus!");
-        //   } else {
-        //     toast.error(result.error?.message || "Gagal menghapus employee.");
-        //   }
-        // } catch (error) {
-        //   console.error("Error deleting employee:", error);
-        //   toast.error("Terjadi kesalahan tak terduga saat menghapus employee.");
-        // } finally {
-        //   setIsDeleting(false);
-        // }
-
-        setIsDeleting(false);
+        try {
+          const result = await deleteUser(user.id);
+          if (result.success) {
+            toast.success(result.message || "User berhasil dihapus!");
+          } else {
+            toast.error(result.error?.message || "Gagal menghapus user.");
+          }
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          toast.error("Terjadi kesalahan tak terduga saat menghapus user.");
+        } finally {
+          setIsDeleting(false);
+          setIsConfirmDialogOpen(false);
+        }
       };
 
       return (
         <div className="flex gap-1">
-          <Button variant={"outline"} asChild>
-            <Link href={`/admin/karyawan/edit/${employee.id}`}>
-              <SquarePen className="mb-px h-4 w-4" /> Edit
+          <Button variant={"outline"} size="sm" asChild>
+            <Link href={`/authenticated/users/edit/${user.id}`}>
+              <SquarePen className="h-4 w-4 mr-1" /> Edit
             </Link>
           </Button>
-          <Button variant={"outline"} asChild>
-            <Link href={`/admin/karyawan/${employee.id}`}>
-              <Eye className="mb-px h-4 w-4" /> Detail
+          <Button variant={"outline"} size="sm" asChild>
+            <Link href={`/authenticated/users/detail/${user.id}`}>
+              <Eye className="h-4 w-4 mr-1" /> Detail
             </Link>
           </Button>
           <Button
             variant={"outline"}
+            size="sm"
+            className="text-destructive hover:text-destructive"
             onClick={() => setIsConfirmDialogOpen(true)}
           >
-            <Trash className="mb-px h-4 w-4" /> Hapus
+            <Trash className="h-4 w-4 mr-1" /> Hapus
           </Button>
 
-          {/* <ConfirmationDialog
-            isOpen={isConfirmDialogOpen}
-            onClose={() => setIsConfirmDialogOpen(false)}
-            onConfirm={handleDeleteEmployee}
-            title="Konfirmasi Penghapusan"
-            message={`Apakah Anda yakin ingin menghapus karyawan "${employee.name}" ? Tindakan ini tidak dapat dibatalkan.`}
-            confirmButtonText={isDeleting ? "Menghapus..." : "Hapus"}
-            cancelButtonText="Batal"
-            isLoading={isDeleting}
-            confirmButtonVariant="destructive"
-          /> */}
+          <AlertDialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Konfirmasi Penghapusan</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Apakah Anda yakin ingin menghapus pelanggan &quot;{user.name}&quot;? 
+                  Tindakan ini akan menghapus data dari sistem dan Firebase Authentication. 
+                  Tindakan ini tidak dapat dibatalkan.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isDeleting}>Batal</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteUser}
+                  disabled={isDeleting}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  {isDeleting ? "Menghapus..." : "Hapus"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       );
     },
