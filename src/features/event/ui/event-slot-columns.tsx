@@ -9,36 +9,16 @@ import { EventSlotAction } from "./event-slot-action";
 
 export const eventSlotColumns: ColumnDef<any>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-0.5"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-0.5"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "date",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Tanggal" />
     ),
     cell: ({ row }) => (
-      <div>{format(new Date(row.getValue("date")), "eeee, d MMMM yyyy", { locale: id })}</div>
+      <div>
+        {format(new Date(row.getValue("date")), "eeee, d MMMM yyyy", {
+          locale: id,
+        })}
+      </div>
     ),
     meta: {
       label: "Tanggal",
@@ -69,18 +49,14 @@ export const eventSlotColumns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Kuota" />
     ),
-    cell: ({ row }) => (
-      <div>{row.getValue("quota")} User</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("quota")} User</div>,
   },
   {
     accessorKey: "current_usage",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Terpakai" />
     ),
-    cell: ({ row }) => (
-      <div>{row.getValue("current_usage")} User</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("current_usage")} User</div>,
   },
   {
     id: "actions",
