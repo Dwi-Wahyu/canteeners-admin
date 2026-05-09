@@ -7,6 +7,8 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 
+export const dynamic = "force-dynamic";
+
 export default async function UserConversationPage({
   params,
 }: {
@@ -44,7 +46,9 @@ export default async function UserConversationPage({
                     <div className="relative">
                       <Avatar className="h-12 w-12 border">
                         <AvatarImage
-                          src={getImageUrl("/avatar/" + (partner?.avatar || ""))}
+                          src={getImageUrl(
+                            "/avatar/" + (partner?.avatar || ""),
+                          )}
                         />
                         <AvatarFallback>
                           {partner?.name?.substring(0, 2).toUpperCase()}
@@ -66,7 +70,7 @@ export default async function UserConversationPage({
                             {
                               addSuffix: true,
                               locale: id,
-                            }
+                            },
                           )}
                         </span>
                       </div>

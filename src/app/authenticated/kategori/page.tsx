@@ -3,6 +3,8 @@ import { getCategories } from "@/features/categories/lib/category-queries";
 import CategoryAdminCard from "@/features/categories/ui/category-admin-card";
 import { Tags } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function CategoryPage() {
   const categories = await getCategories();
 

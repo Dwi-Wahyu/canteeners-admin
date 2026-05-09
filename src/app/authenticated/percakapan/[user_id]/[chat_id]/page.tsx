@@ -6,6 +6,8 @@ import { Conversation, Message } from "@/features/chat/types";
 import { notFound } from "next/navigation";
 import ChatRoomClient from "./chat-room-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function ChatRoomPage({
   params,
 }: {
