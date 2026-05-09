@@ -16,6 +16,8 @@ import { NavigationButton } from "@/components/navigation-button";
 import { notFound } from "next/navigation";
 import { getImageUrl } from "@/helper/get-image-url";
 
+export const dynamic = "force-dynamic";
+
 export default async function DetailKantinPage({
   params,
 }: {
