@@ -42,4 +42,4 @@ jobs:
             docker pull ghcr.io/dwi-wahyu/canteeners-admin:staging
 
             # Restart service admin saja
-            docker-compose -f docker-compose.staging.yml up -d admin-staging
+            docker compose -f docker-compose.staging.yml up -d admin-staging

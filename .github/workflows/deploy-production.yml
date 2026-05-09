@@ -54,4 +54,4 @@ jobs:
             docker pull ghcr.io/dwi-wahyu/canteeners-admin:latest
 
             # Restart service admin production saja
-            docker-compose up -d admin
+            docker compose up -d admin
