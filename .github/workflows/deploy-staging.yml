@@ -60,8 +60,8 @@ jobs:
             # Ganti dengan path folder root project Anda di server
             cd /var/www/canteeners 
 
-            # Pull image terbaru
-            docker pull ghcr.io/dwi-wahyu/canteeners-admin:staging
+            # Pull image terbaru menggunakan Podman
+            podman pull ghcr.io/dwi-wahyu/canteeners-admin:staging
 
-            # Restart service admin saja
-            docker compose -f docker-compose.staging.yml --env-file .env.staging up -d admin-staging
+            # Restart Staging Pod menggunakan native kube play
+            podman kube play podman/staging/pod.yaml
