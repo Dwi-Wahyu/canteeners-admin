@@ -66,4 +66,4 @@ jobs:
             podman pull ghcr.io/dwi-wahyu/canteeners-admin:latest
 
             # Restart service admin production menggunakan native systemd (Quadlets)
-            systemctl --user restart admin.service
+            systemctl --user restart canteeners-admin.service
