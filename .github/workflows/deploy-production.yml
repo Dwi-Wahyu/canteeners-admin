@@ -59,11 +59,20 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            # Ganti dengan path folder root project Anda di server
-            cd /var/www/canteeners 
+            cd /var/www/canteeners
 
-            # Pull image terbaru menggunakan Podman
-            podman pull ghcr.io/dwi-wahyu/canteeners-admin:latest
+            podman login ghcr.io -u dwi-wahyu -p ${{ secrets.GHCR_TOKEN }}
 
-            # Restart service admin production menggunakan native systemd (Quadlets)
-            systemctl --user restart canteeners-admin.service
+            # Pull images using Podman
+            podman pull ghcr.io/dwi-wahyu/canteeners-main:latest
+            podman pull ghcr.io/dwi-wahyu/canteeners-migrator:latest
+
+            # Jalankan migration
+            podman run --rm \
+              --network host \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              ghcr.io/dwi-wahyu/canteeners-migrator:latest \
+              bash -c "bunx prisma migrate deploy"
+
+            # Restart service main production menggunakan native systemd (Quadlets)
+            systemctl --user restart canteeners-main.service

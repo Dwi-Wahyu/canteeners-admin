@@ -57,11 +57,24 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            # Ganti dengan path folder root project Anda di server
-            cd /var/www/canteeners 
+            export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
-            # Pull image terbaru menggunakan Podman
+            podman login ghcr.io -u dwi-wahyu -p ${{ secrets.GHCR_TOKEN }}
+
+            # Pull images terbaru
             podman pull ghcr.io/dwi-wahyu/canteeners-admin:staging
+            podman pull ghcr.io/dwi-wahyu/canteeners-migrator:staging
 
-            # Restart Staging Pod menggunakan native kube play
-            podman kube play podman/staging/pod.yaml
+            # Restart pod dengan image terbaru
+            podman kube down /var/www/canteeners/podman/staging/pod.yaml
+            podman kube play /var/www/canteeners/podman/staging/pod.yaml
+
+            # Tunggu DB siap
+            sleep 10
+
+            # Jalankan migration
+            podman run --rm \
+              --pod canteeners-staging-pod \
+              -e DATABASE_URL=${{secrets.DATABASE_URL}} \
+              ghcr.io/dwi-wahyu/canteeners-migrator:staging \
+              bunx prisma migrate deploy
