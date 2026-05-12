@@ -126,6 +126,11 @@ export const adminMenu = {
       url: "/authenticated/faq",
       icon: HelpCircle,
     },
+    {
+      title: "Pengaturan Global",
+      url: "/authenticated/pengaturan",
+      icon: Settings,
+    },
   ],
 };
 
