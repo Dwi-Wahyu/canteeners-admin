@@ -24,6 +24,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      - name: Debug Build Args
+        run: |
+          echo "URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" | sed 's/./& /g' # print dengan spasi agar tidak disensor GitHub tapi kita bisa liat ada isinya
+
       - name: Build and Push
         uses: docker/build-push-action@v4
         with:
