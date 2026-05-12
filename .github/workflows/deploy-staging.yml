@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    environment: Staging
     steps:
       - uses: actions/checkout@v3
 
@@ -43,6 +44,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    environment: Staging
     steps:
       - name: Prepare Image Tag
         id: prep
@@ -75,6 +77,6 @@ jobs:
             # Jalankan migration
             podman run --rm \
               --pod canteeners-staging-pod \
-              -e DATABASE_URL=${{secrets.DATABASE_URL}} \
+              -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
               ghcr.io/dwi-wahyu/canteeners-migrator:staging \
               bunx prisma migrate deploy
