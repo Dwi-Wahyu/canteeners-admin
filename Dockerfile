@@ -6,7 +6,8 @@ FROM base AS deps
 WORKDIR /app
 
 COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile
+# RUN bun install --frozen-lockfile
+RUN bun install
 
 # 2. Build the application
 FROM base AS builder
