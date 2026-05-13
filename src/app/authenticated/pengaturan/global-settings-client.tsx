@@ -33,6 +33,11 @@ export default function GlobalSettingsClient({
     "15";
   const [timeout, setTimeoutValue] = useState(paymentTimeout);
 
+  const shopConfirmationTimeout =
+    initialSettings.find((s) => s.key === "shop_confirmation_timeout_minutes")
+      ?.value || "30";
+  const [confTimeout, setConfTimeoutValue] = useState(shopConfirmationTimeout);
+
   const handleSaveTimeout = async () => {
     if (!timeout || isNaN(Number(timeout)) || Number(timeout) <= 0) {
       toast.error("Masa tenggang harus berupa angka positif");
@@ -43,6 +48,26 @@ export default function GlobalSettingsClient({
     const result = await updateGlobalSetting(
       "payment_timeout_minutes",
       timeout,
+    );
+    setLoading(false);
+
+    if (result.success) {
+      toast.success("Pengaturan berhasil disimpan");
+    } else {
+      toast.error(result.message || "Gagal menyimpan pengaturan");
+    }
+  };
+
+  const handleSaveConfTimeout = async () => {
+    if (!confTimeout || isNaN(Number(confTimeout)) || Number(confTimeout) <= 0) {
+      toast.error("Waktu konfirmasi harus berupa angka positif");
+      return;
+    }
+
+    setLoading(true);
+    const result = await updateGlobalSetting(
+      "shop_confirmation_timeout_minutes",
+      confTimeout,
     );
     setLoading(false);
 
@@ -76,6 +101,39 @@ export default function GlobalSettingsClient({
               />
             </div>
             <Button onClick={handleSaveTimeout} disabled={loading}>
+              {loading ? (
+                <Loader2 className="animate-spin mr-2" />
+              ) : (
+                <Save className="mr-2" />
+              )}
+              Simpan
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Batas Waktu Konfirmasi Kedai</CardTitle>
+          <CardDescription>
+            Tentukan durasi maksimum (dalam menit) bagi pemilik kedai untuk
+            mengonfirmasi bukti pembayaran sebelum pesanan dibatalkan otomatis
+            dan refund dibuat.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-end gap-4 max-w-sm">
+            <div className="grid gap-2 flex-1">
+              <Label htmlFor="shop_confirmation_timeout">Durasi (Menit)</Label>
+              <Input
+                id="shop_confirmation_timeout"
+                type="number"
+                value={confTimeout}
+                onChange={(e) => setConfTimeoutValue(e.target.value)}
+                placeholder="Contoh: 30"
+              />
+            </div>
+            <Button onClick={handleSaveConfTimeout} disabled={loading}>
               {loading ? (
                 <Loader2 className="animate-spin mr-2" />
               ) : (
