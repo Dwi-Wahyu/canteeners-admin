@@ -41,7 +41,7 @@ ENV FIREBASE_CLIENT_EMAIL=placeholder@placeholder.com
 ENV FIREBASE_PROJECT_ID=placeholder
 
 # Generate Prisma Client if schema exists
-RUN if [ -d "prisma" ]; then bunx prisma generate; fi
+RUN if [ -d "prisma/schema" ]; then bunx prisma generate --schema ./prisma/schema; fi
 
 RUN bun run build
 
@@ -53,16 +53,11 @@ ENV NODE_ENV=production
 
 # Copy standalone build and static files
 COPY --from=builder /app/public ./public
-
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/src/generated/prisma ./src/generated/prisma
-
 COPY --from=builder /app/.next/standalone ./
-
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/src/generated/prisma ./src/generated/prisma
-
 COPY --from=builder /app/.next/static ./.next/static
+
+# Prisma untuk runtime query
+COPY --from=builder /app/src/generated/prisma ./src/generated/prisma
 
 EXPOSE 3001
 

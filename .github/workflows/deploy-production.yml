@@ -64,7 +64,7 @@ jobs:
             podman login ghcr.io -u dwi-wahyu -p ${{ secrets.GHCR_TOKEN }}
 
             # Pull images using Podman
-            podman pull ghcr.io/dwi-wahyu/canteeners-main:latest
+            podman pull ghcr.io/dwi-wahyu/canteeners-admin:latest
             podman pull ghcr.io/dwi-wahyu/canteeners-migrator:latest
 
             # Jalankan migration
@@ -74,5 +74,5 @@ jobs:
               ghcr.io/dwi-wahyu/canteeners-migrator:latest \
               bash -c "bunx prisma migrate deploy"
 
-            # Restart service main production menggunakan native systemd (Quadlets)
-            systemctl --user restart canteeners-main.service
+            # Restart service admin production menggunakan native systemd (Quadlets)
+            systemctl --user restart canteeners-admin.service
