@@ -30,7 +30,7 @@ export const CustomerColumns: ColumnDef<UsersTableDataType>[] = [
       return (
         <img
           className="rounded-lg object-cover aspect-square"
-          src={avatar.startsWith("http") ? avatar : getImageUrl("/avatar/" + avatar)}
+          src={getImageUrl("/avatar/" + avatar)}
           alt={name}
           width={100}
           height={100}
@@ -92,18 +92,23 @@ export const CustomerColumns: ColumnDef<UsersTableDataType>[] = [
             <Trash className="h-4 w-4 mr-1" /> Hapus
           </Button>
 
-          <AlertDialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+          <AlertDialog
+            open={isConfirmDialogOpen}
+            onOpenChange={setIsConfirmDialogOpen}
+          >
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Konfirmasi Penghapusan</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Apakah Anda yakin ingin menghapus pelanggan &quot;{user.name}&quot;? 
-                  Tindakan ini akan menghapus data dari sistem dan Firebase Authentication. 
-                  Tindakan ini tidak dapat dibatalkan.
+                  Apakah Anda yakin ingin menghapus pelanggan &quot;{user.name}
+                  &quot;? Tindakan ini akan menghapus data dari sistem dan
+                  Firebase Authentication. Tindakan ini tidak dapat dibatalkan.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={isDeleting}>Batal</AlertDialogCancel>
+                <AlertDialogCancel disabled={isDeleting}>
+                  Batal
+                </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDeleteUser}
                   disabled={isDeleting}
