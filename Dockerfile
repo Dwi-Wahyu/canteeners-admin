@@ -51,6 +51,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+COPY --from=builder /app/package.json ./package.json
+
 # Copy standalone build and static files
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
@@ -58,6 +60,8 @@ COPY --from=builder /app/.next/static ./.next/static
 
 # Prisma untuk runtime query
 COPY --from=builder /app/src/generated/prisma ./src/generated/prisma
+
+RUN bun install jose jwks-rsa firebase-admin
 
 EXPOSE 3001
 
