@@ -39,6 +39,7 @@ ENV FIREBASE_PRIVATE_KEY=placeholder
 ENV FIREBASE_API_KEY=placeholder
 ENV FIREBASE_CLIENT_EMAIL=placeholder@placeholder.com
 ENV FIREBASE_PROJECT_ID=placeholder
+ENV SKIP_REDIS=true
 
 # Generate Prisma Client if schema exists
 RUN if [ -d "prisma/schema" ]; then bunx prisma generate --schema ./prisma/schema; fi
