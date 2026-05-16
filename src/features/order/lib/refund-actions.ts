@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/config/auth";
 import { RefundStatus } from "@/generated/prisma";
+import { syncRefundToFirestore } from "@/lib/firebase/sync-refund";
 
 export async function updateRefundStatus(
   id: string,
@@ -53,6 +54,11 @@ export async function updateRefundStatus(
         },
       }),
     ]);
+
+    // Sync to Firestore for real-time update on customer & shop side
+    await syncRefundToFirestore(id, {
+      status: status as string,
+    });
 
     revalidatePath("/authenticated/refund");
     revalidatePath(`/authenticated/refund/${id}`);
