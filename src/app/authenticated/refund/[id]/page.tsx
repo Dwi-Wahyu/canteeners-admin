@@ -17,10 +17,7 @@ import {
 } from "@/constants/refund-mapping";
 import {
   ArrowLeft,
-  Calendar,
-  CreditCard,
   FileText,
-  Info,
   Package,
   Store,
   User,
@@ -154,7 +151,9 @@ export default async function RefundDetailPage({
                   </p>
                   <div className="relative aspect-video max-w-md overflow-hidden rounded-lg border bg-white">
                     <img
-                      src={getImageUrl(refund.complaint_proof_url)}
+                      src={getImageUrl(
+                        "/complaint-proof/" + refund.complaint_proof_url,
+                      )}
                       alt="Bukti Komplain"
                       className="object-contain w-full h-full"
                     />
