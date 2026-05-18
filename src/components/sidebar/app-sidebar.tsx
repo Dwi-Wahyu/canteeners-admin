@@ -95,6 +95,10 @@ export const adminMenu = {
           title: "Komplain",
           url: "/authenticated/komplain",
         },
+        {
+          title: "Pelanggaran Mitra",
+          url: "/authenticated/pelanggaran-mitra",
+        },
       ],
     },
   ],

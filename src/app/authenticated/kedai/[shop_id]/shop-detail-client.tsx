@@ -28,11 +28,14 @@ import NavButton from "@/components/nav-button";
 import { getShopDetail } from "@/features/shop/lib/shop-queries";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SuspendShopDialog } from "@/features/shop/ui/suspend-shop-dialog";
 
 export default function ShopDetailClient({
   shop,
+  adminUserId,
 }: {
   shop: NonNullable<Awaited<ReturnType<typeof getShopDetail>>>;
+  adminUserId: string;
 }) {
   const statusColors: Record<string, string> = {
     ACTIVE: "bg-green-100 text-green-800 border-green-200",
@@ -71,7 +74,13 @@ export default function ShopDetailClient({
             {shop.description || "Tidak ada deskripsi untuk kedai ini."}
           </p>
 
-          <div className="flex flex-wrap gap-4 text-sm">
+          {shop.status === "SUSPENDED" && shop.suspended_reason && (
+            <div className="bg-red-50 border border-red-200 text-red-800 p-3 rounded-md text-sm mt-2 max-w-2xl">
+              <span className="font-semibold">Alasan Penangguhan:</span> {shop.suspended_reason}
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-4 text-sm mt-4">
             <div className="flex items-center gap-1.5 bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full border border-yellow-200">
               <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
               <span className="font-bold">
@@ -87,7 +96,7 @@ export default function ShopDetailClient({
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 mt-2">
             <NavButton
               href={`/authenticated/kedai/${shop.id}/tagihan`}
               variant="outline"
@@ -95,6 +104,12 @@ export default function ShopDetailClient({
               <HandCoins />
               Buat Tagihan
             </NavButton>
+
+            <SuspendShopDialog 
+              shopId={shop.id} 
+              adminUserId={adminUserId} 
+              isSuspended={shop.status === "SUSPENDED"} 
+            />
           </div>
         </div>
       </div>
