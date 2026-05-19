@@ -58,9 +58,23 @@ export function EventSlotForm({ eventId, initialData, onSuccess }: EventSlotForm
   const onSubmit = async (values: EventSlotSchemaType) => {
     setIsLoading(true);
     try {
+      const startDate = new Date(values.date);
+      const [startH, startM] = values.start_time.split(":").map(Number);
+      startDate.setHours(startH, startM, 0, 0);
+
+      const endDate = new Date(values.date);
+      const [endH, endM] = values.end_time.split(":").map(Number);
+      endDate.setHours(endH, endM, 0, 0);
+
+      const payload = {
+        ...values,
+        exact_start: startDate.toISOString(),
+        exact_end: endDate.toISOString(),
+      };
+
       const res = initialData
-        ? await updateEventSlot(initialData.id, values)
-        : await createEventSlot(values);
+        ? await updateEventSlot(initialData.id, payload)
+        : await createEventSlot(payload);
 
       if (res.success) {
         toast.success(initialData ? "Slot diperbarui" : "Slot dibuat");

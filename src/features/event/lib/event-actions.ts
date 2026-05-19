@@ -54,18 +54,22 @@ export async function createEventSlot(data: any) {
   // Convert string times to Date objects for the specific date
   const { date, start_time, end_time, ...rest } = EventSlotSchema.parse(data);
   
-  const start = new Date(date);
-  const [startH, startM] = start_time.split(":").map(Number);
-  start.setHours(startH, startM, 0, 0);
+  const start = data.exact_start ? new Date(data.exact_start) : new Date(date);
+  if (!data.exact_start) {
+    const [startH, startM] = start_time.split(":").map(Number);
+    start.setHours(startH, startM, 0, 0);
+  }
 
-  const end = new Date(date);
-  const [endH, endM] = end_time.split(":").map(Number);
-  end.setHours(endH, endM, 0, 0);
+  const end = data.exact_end ? new Date(data.exact_end) : new Date(date);
+  if (!data.exact_end) {
+    const [endH, endM] = end_time.split(":").map(Number);
+    end.setHours(endH, endM, 0, 0);
+  }
 
   const slot = await prisma.eventSlot.create({
     data: {
       ...rest,
-      date,
+      date: data.exact_start ? new Date(data.exact_start) : date,
       start_time: start,
       end_time: end,
     },
@@ -80,19 +84,23 @@ export async function updateEventSlot(id: number, data: any) {
   
   const { date, start_time, end_time, ...rest } = EventSlotSchema.parse(data);
   
-  const start = new Date(date);
-  const [startH, startM] = start_time.split(":").map(Number);
-  start.setHours(startH, startM, 0, 0);
+  const start = data.exact_start ? new Date(data.exact_start) : new Date(date);
+  if (!data.exact_start) {
+    const [startH, startM] = start_time.split(":").map(Number);
+    start.setHours(startH, startM, 0, 0);
+  }
 
-  const end = new Date(date);
-  const [endH, endM] = end_time.split(":").map(Number);
-  end.setHours(endH, endM, 0, 0);
+  const end = data.exact_end ? new Date(data.exact_end) : new Date(date);
+  if (!data.exact_end) {
+    const [endH, endM] = end_time.split(":").map(Number);
+    end.setHours(endH, endM, 0, 0);
+  }
 
   const slot = await prisma.eventSlot.update({
     where: { id },
     data: {
       ...rest,
-      date,
+      date: data.exact_start ? new Date(data.exact_start) : date,
       start_time: start,
       end_time: end,
     },
