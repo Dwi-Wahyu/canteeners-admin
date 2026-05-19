@@ -128,7 +128,7 @@ export function EventSlotForm({ eventId, initialData, onSuccess }: EventSlotForm
               <FormItem>
                 <FormLabel>Waktu Mulai</FormLabel>
                 <FormControl>
-                  <Input type="time" {...field} />
+                  <Input placeholder="08:00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +142,7 @@ export function EventSlotForm({ eventId, initialData, onSuccess }: EventSlotForm
               <FormItem>
                 <FormLabel>Waktu Selesai</FormLabel>
                 <FormControl>
-                  <Input type="time" {...field} />
+                  <Input placeholder="10:00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
