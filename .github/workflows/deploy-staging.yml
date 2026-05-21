@@ -28,6 +28,9 @@ jobs:
         run: |
           echo "URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" | sed 's/./& /g' # print dengan spasi agar tidak disensor GitHub tapi kita bisa liat ada isinya
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and Push
         uses: docker/build-push-action@v4
         with:
