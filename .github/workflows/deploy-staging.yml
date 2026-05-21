@@ -34,6 +34,8 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/dwi-wahyu/canteeners-admin:staging
+          cache-from: type=registry,ref=ghcr.io/dwi-wahyu/canteeners-admin:cache-staging
+          cache-to: type=registry,ref=ghcr.io/dwi-wahyu/canteeners-admin:cache-staging,mode=max
           build-args: |
             NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
             NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
@@ -50,12 +52,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Staging
     steps:
-      - name: Prepare Image Tag
-        id: prep
-        run: |
-          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          echo "tag=ghcr.io/${REPO_LOWER}:staging" >> $GITHUB_OUTPUT
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         timeout-minutes: 20
@@ -72,7 +68,6 @@ jobs:
 
             # Pull images terbaru
             podman pull ghcr.io/dwi-wahyu/canteeners-admin:staging
-            podman pull ghcr.io/dwi-wahyu/canteeners-migrator:staging
 
             # Restart pod dengan image terbaru
             podman kube down /var/www/canteeners/podman/staging/pod.yaml
