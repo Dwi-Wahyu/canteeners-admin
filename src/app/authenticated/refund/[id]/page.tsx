@@ -289,20 +289,37 @@ export default async function RefundDetailPage({
 
         <div className="space-y-6">
           {/* Admin Decision */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Keputusan Admin</CardTitle>
-              <CardDescription>
-                Tinjau bukti dan ambil keputusan final untuk mediasi.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <RefundActionForm
-                refundId={refund.id}
-                currentStatus={refund.status}
-              />
-            </CardContent>
-          </Card>
+          {["PROCESSED", "COMPLETED"].includes(refund.status) ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Keputusan Admin</CardTitle>
+                <CardDescription>
+                  Tinjau bukti dan ambil keputusan final untuk mediasi.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-muted p-4 rounded-md text-center">
+                  <p className="text-sm font-medium">Refund telah diproses</p>
+                  <p className="text-xs text-muted-foreground mt-1">Status tidak dapat diubah lagi karena dana sudah diproses oleh kedai.</p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>Keputusan Admin</CardTitle>
+                <CardDescription>
+                  Tinjau bukti dan ambil keputusan final untuk mediasi.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RefundActionForm
+                  refundId={refund.id}
+                  currentStatus={refund.status}
+                />
+              </CardContent>
+            </Card>
+          )}
 
           {/* Customer & Shop Details */}
           <Card>

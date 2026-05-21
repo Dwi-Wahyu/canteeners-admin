@@ -27,6 +27,17 @@ export async function updateRefundStatus(
       return { success: false, error: "Refund tidak ditemukan" };
     }
 
+    let note = "";
+
+    if (status === "REJECTED") {
+      note = rejected_reason || "Refund ditolak tanpa alasan spesifik";
+    } else {
+      if (status === "APPROVED") {
+        note =
+          "Admin menyetujui refund, menunggu pemilik kedai proses pengembalian dana";
+      }
+    }
+
     await prisma.$transaction([
       prisma.refund.update({
         where: { id },
@@ -45,10 +56,7 @@ export async function updateRefundStatus(
         data: {
           refund_id: id,
           status,
-          note:
-            status === "REJECTED"
-              ? rejected_reason
-              : `Admin memproses refund ke status ${status}`,
+          note,
           actor_id: session.user.id,
           actor_name: session.user.name,
         },

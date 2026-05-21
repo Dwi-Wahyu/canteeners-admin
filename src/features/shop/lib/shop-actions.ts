@@ -89,7 +89,7 @@ export async function suspendShop({
         recipientId: shop.owner.user_id,
         type: "SHOP_VIOLATION",
         subType: "SUSPENDED",
-        title: "🛑 Kedai Anda Dinonaktifkan Sementara",
+        title: "Kedai Anda Dinonaktifkan Sementara",
         body: `Kedai ditangguhkan oleh admin dengan alasan: ${reason}`,
         isRead: false,
         intent: "ERROR",
@@ -103,7 +103,7 @@ export async function suspendShop({
       // Push Notification FCM
       await sendPushNotification({
         userId: shop.owner.user_id,
-        title: "🛑 Kedai Anda Dinonaktifkan Sementara",
+        title: "Kedai Anda Dinonaktifkan Sementara",
         body: `Kedai ditangguhkan oleh admin dengan alasan: ${reason}`,
         data: {
           type: "INFO",
@@ -148,7 +148,7 @@ export async function unsuspendShop({ shopId }: { shopId: string }) {
         recipientId: shop.owner.user_id,
         type: "SHOP_VIOLATION",
         subType: "SUSPENDED",
-        title: "✅ Kedai Anda Telah Diaktifkan Kembali",
+        title: "Kedai Anda Telah Diaktifkan Kembali",
         body: "Penangguhan kedai telah dicabut. Anda dapat kembali beroperasi.",
         isRead: false,
         intent: "SUCCESS",
@@ -162,7 +162,7 @@ export async function unsuspendShop({ shopId }: { shopId: string }) {
       // Push Notification FCM
       await sendPushNotification({
         userId: shop.owner.user_id,
-        title: "✅ Kedai Anda Telah Diaktifkan Kembali",
+        title: "Kedai Anda Telah Diaktifkan Kembali",
         body: "Penangguhan kedai telah dicabut. Anda dapat kembali beroperasi.",
         data: {
           type: "INFO",

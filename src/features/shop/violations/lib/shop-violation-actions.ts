@@ -53,7 +53,7 @@ export async function createShopViolation(input: CreateShopViolationInput) {
         recipientId: shop.owner.user_id,
         type: "SHOP_VIOLATION",
         subType: "CREATED",
-        title: `⚠️ Catatan Pelanggaran: ${title}`,
+        title: `Catatan Pelanggaran: ${title}`,
         body:
           input.note ??
           "Kedai Anda menerima catatan pelanggaran baru dari admin. Periksa halaman pelanggaran untuk informasi lebih lanjut.",
@@ -69,7 +69,7 @@ export async function createShopViolation(input: CreateShopViolationInput) {
       // Push Notification FCM
       await sendPushNotification({
         userId: shop.owner.user_id,
-        title: `⚠️ Catatan Pelanggaran: ${title}`,
+        title: `Catatan Pelanggaran: ${title}`,
         body:
           input.note ??
           "Kedai Anda menerima catatan pelanggaran baru dari admin. Periksa halaman pelanggaran untuk informasi lebih lanjut.",
