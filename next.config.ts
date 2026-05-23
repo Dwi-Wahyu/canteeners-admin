@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
 
-  serverExternalPackages: ["firebase-admin", "jose", "jwks-rsa"],
+  serverExternalPackages: ["firebase-admin", "jwks-rsa"],
 
   images: {
     remotePatterns: [

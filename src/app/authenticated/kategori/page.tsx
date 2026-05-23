@@ -2,10 +2,18 @@ import NavButton from "@/components/nav-button";
 import { getCategories } from "@/features/categories/lib/category-queries";
 import CategoryAdminCard from "@/features/categories/ui/category-admin-card";
 import { Tags } from "lucide-react";
+import { redirect } from "next/navigation";
+import { auth } from "@/config/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function CategoryPage() {
+  const session = await auth();
+
+  if (!session || session.user.role !== "SUPERADMIN") {
+    redirect("/authenticated/dashboard");
+  }
+
   const categories = await getCategories();
 
   return (

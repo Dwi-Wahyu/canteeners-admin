@@ -1,9 +1,17 @@
 import NavButton from "@/components/nav-button";
+import { auth } from "@/config/auth";
 import { getBanners } from "@/features/banner/lib/banner-queries";
 import BannerCard from "@/features/banner/ui/banner-card";
 import { Image as LucideImage } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function BannerPage() {
+  const session = await auth();
+
+  if (!session || session.user.role !== "SUPERADMIN") {
+    redirect("/authenticated/dashboard");
+  }
+
   const banners = await getBanners();
 
   return (
@@ -11,7 +19,9 @@ export default async function BannerPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Banner</h1>
-          <p className="text-muted-foreground">Kelola banner promosi aplikasi</p>
+          <p className="text-muted-foreground">
+            Kelola banner promosi aplikasi
+          </p>
         </div>
         <NavButton href="/authenticated/banner/create">
           <LucideImage className="w-4 h-4 mr-2" />

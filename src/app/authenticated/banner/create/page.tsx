@@ -1,6 +1,14 @@
+import { auth } from "@/config/auth";
 import BannerForm from "@/features/banner/ui/banner-form";
+import { redirect } from "next/navigation";
 
-export default function CreateBannerPage() {
+export default async function CreateBannerPage() {
+  const session = await auth();
+
+  if (!session || session.user.role !== "SUPERADMIN") {
+    redirect("/authenticated/dashboard");
+  }
+
   return (
     <div className="p-6 space-y-6">
       <div>

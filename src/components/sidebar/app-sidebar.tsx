@@ -54,24 +54,9 @@ export const adminMenu = {
       icon: FileText,
     },
     {
-      title: "Kategori",
-      url: "/authenticated/kategori",
-      icon: Tags,
-    },
-    {
-      title: "Banner",
-      url: "/authenticated/banner",
-      icon: LucideImage,
-    },
-    {
       title: "Testimoni",
       url: "/authenticated/testimony",
       icon: MessageSquareQuote,
-    },
-    {
-      title: "Voucher",
-      url: "/authenticated/voucher",
-      icon: TicketPercent,
     },
     {
       title: "Event",
@@ -79,27 +64,28 @@ export const adminMenu = {
       icon: Calendar,
     },
     {
-      title: "Pusat Laporan",
-      url: "/authenticated/laporan",
+      title: "Laporan",
       icon: AlertCircle,
-      child: [
-        {
-          title: "Laporan",
-          url: "/authenticated/laporan",
-        },
-        {
-          title: "Refund",
-          url: "/authenticated/refund",
-        },
-        {
-          title: "Komplain",
-          url: "/authenticated/komplain",
-        },
-        {
-          title: "Pelanggaran Mitra",
-          url: "/authenticated/pelanggaran-mitra",
-        },
-      ],
+
+      url: "/authenticated/laporan",
+    },
+    {
+      title: "Refund",
+      icon: AlertCircle,
+
+      url: "/authenticated/refund",
+    },
+    {
+      title: "Komplain",
+      icon: AlertCircle,
+
+      url: "/authenticated/komplain",
+    },
+    {
+      title: "Pelanggaran Mitra",
+      icon: AlertCircle,
+
+      url: "/authenticated/pelanggaran-mitra",
     },
   ],
   navUser: [
@@ -108,11 +94,6 @@ export const adminMenu = {
       url: "/authenticated/users/create",
       icon: UserPlus,
     },
-    // {
-    //   title: "Kurir",
-    //   url: "/authenticated/users/kurir",
-    //   icon: Truck,
-    // },
     {
       title: "Pemilik Kedai",
       url: "/authenticated/users/pemilik-kedai",
@@ -159,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const filteredNavMain = adminMenu.navMain.filter((item) => {
     if (role === "SUPERADMIN") return true;
     if (role === "ADMIN") {
-      return !["Kantin", "Kedai", "Testimoni"].includes(item.title);
+      return !["Kantin", "Testimoni"].includes(item.title);
     }
     return false;
   });

@@ -1,14 +1,21 @@
 import { getShopBillings } from "@/features/shop/billing/lib/billing-queries";
 import { BillingTable } from "@/features/shop/billing/ui/billing-table";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getShopById } from "@/features/shop/lib/shop-queries";
 import { GenerateBillingDialog } from "@/features/shop/billing/ui/generate-billing-dialog";
+import { auth } from "@/config/auth";
 
 interface Props {
   params: Promise<{ shop_id: string }>;
 }
 
 export default async function ShopBillingPage({ params }: Props) {
+  const session = await auth();
+
+  if (!session || session.user.role !== "SUPERADMIN") {
+    redirect("/authenticated/dashboard");
+  }
+
   const { shop_id } = await params;
 
   const shop = await getShopById(shop_id);

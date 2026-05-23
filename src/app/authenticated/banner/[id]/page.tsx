@@ -1,12 +1,19 @@
+import { auth } from "@/config/auth";
 import { getBannerById } from "@/features/banner/lib/banner-queries";
 import BannerForm from "@/features/banner/ui/banner-form";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function EditBannerPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session = await auth();
+
+  if (!session || session.user.role !== "SUPERADMIN") {
+    redirect("/authenticated/dashboard");
+  }
+
   const { id } = await params;
   const banner = await getBannerById(Number(id));
 
