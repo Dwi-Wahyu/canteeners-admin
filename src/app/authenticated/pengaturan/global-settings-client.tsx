@@ -38,6 +38,11 @@ export default function GlobalSettingsClient({
       ?.value || "30";
   const [confTimeout, setConfTimeoutValue] = useState(shopConfirmationTimeout);
 
+  const shopOrderAcceptanceTimeout =
+    initialSettings.find((s) => s.key === "shop_order_acceptance_timeout_minutes")
+      ?.value || "10";
+  const [orderAcceptanceTimeout, setOrderAcceptanceTimeoutValue] = useState(shopOrderAcceptanceTimeout);
+
   const handleSaveTimeout = async () => {
     if (!timeout || isNaN(Number(timeout)) || Number(timeout) <= 0) {
       toast.error("Masa tenggang harus berupa angka positif");
@@ -68,6 +73,26 @@ export default function GlobalSettingsClient({
     const result = await updateGlobalSetting(
       "shop_confirmation_timeout_minutes",
       confTimeout,
+    );
+    setLoading(false);
+
+    if (result.success) {
+      toast.success("Pengaturan berhasil disimpan");
+    } else {
+      toast.error(result.message || "Gagal menyimpan pengaturan");
+    }
+  };
+
+  const handleSaveOrderAcceptanceTimeout = async () => {
+    if (!orderAcceptanceTimeout || isNaN(Number(orderAcceptanceTimeout)) || Number(orderAcceptanceTimeout) <= 0) {
+      toast.error("Waktu penerimaan pesanan harus berupa angka positif");
+      return;
+    }
+
+    setLoading(true);
+    const result = await updateGlobalSetting(
+      "shop_order_acceptance_timeout_minutes",
+      orderAcceptanceTimeout,
     );
     setLoading(false);
 
@@ -134,6 +159,38 @@ export default function GlobalSettingsClient({
               />
             </div>
             <Button onClick={handleSaveConfTimeout} disabled={loading}>
+              {loading ? (
+                <Loader2 className="animate-spin mr-2" />
+              ) : (
+                <Save className="mr-2" />
+              )}
+              Simpan
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Batas Waktu Penerimaan Pesanan</CardTitle>
+          <CardDescription>
+            Tentukan durasi maksimum (dalam menit) bagi pemilik kedai untuk
+            menerima/mengonfirmasi pesanan baru sebelum pesanan dibatalkan otomatis.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-end gap-4 max-w-sm">
+            <div className="grid gap-2 flex-1">
+              <Label htmlFor="shop_order_acceptance_timeout">Durasi (Menit)</Label>
+              <Input
+                id="shop_order_acceptance_timeout"
+                type="number"
+                value={orderAcceptanceTimeout}
+                onChange={(e) => setOrderAcceptanceTimeoutValue(e.target.value)}
+                placeholder="Contoh: 10"
+              />
+            </div>
+            <Button onClick={handleSaveOrderAcceptanceTimeout} disabled={loading}>
               {loading ? (
                 <Loader2 className="animate-spin mr-2" />
               ) : (
