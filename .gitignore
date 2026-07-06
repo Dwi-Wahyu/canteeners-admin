@@ -43,3 +43,6 @@ src/generated/prisma
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# PM2
+ecosystem.config.cjs
