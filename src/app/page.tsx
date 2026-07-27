@@ -71,12 +71,7 @@ export default function LoginPage() {
       {/* KIRI: FORM LOGIN */}
       <div className="flex flex-col md:justify-center px-8 py-12 md:px-16 lg:px-24">
         <div className="mb-4 md:mb-8 flex items-center gap-3">
-          <Image
-            src="/app-logo.svg"
-            alt="Canteeners Logo"
-            width={40}
-            height={40}
-          />
+          <Image src="/logo.png" alt="Canteeners Logo" width={40} height={40} />
           <div>
             <h1 className="text-xl font-bold tracking-tight">Canteeners</h1>
             <h1 className="font-medium">Kantin Naik Level</h1>
