@@ -20,6 +20,7 @@ import {
   FileText,
   HelpCircle,
   Image as LucideImage,
+  Layers,
   MessageSquareQuote,
   TicketPercent,
   Truck,
@@ -121,6 +122,16 @@ export const adminMenu = {
     },
   ],
   navSetting: [
+    {
+      title: "Pengaturan Global",
+      url: "/authenticated/pengaturan",
+      icon: Settings,
+    },
+    {
+      title: "Monitoring Antrean",
+      url: "/authenticated/queues",
+      icon: Layers,
+    },
     {
       title: "FAQ",
       url: "/authenticated/faq",
