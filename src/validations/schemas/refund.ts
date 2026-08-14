@@ -1,4 +1,4 @@
-import { RefundReason, RefundStatus } from "@/generated/prisma";
+import { RefundReason, RefundStatus } from "@prisma/client";
 import { z } from "zod";
 
 export const InputRefundSchema = z.object({

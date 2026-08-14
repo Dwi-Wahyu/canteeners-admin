@@ -1,4 +1,4 @@
-import { Discount } from "@/generated/prisma";
+import { Discount } from "@prisma/client";
 import { z } from "zod";
 
 export type DiscountTableDataType = Discount & {
@@ -35,7 +35,12 @@ export type GetDiscountOwnerTableDataResponseType = {
 export const CreateDiscountSchema = z.object({
   name: z.string().min(1, "Nama voucher harus diisi"),
   description: z.string().optional(),
-  code: z.string().min(3, "Kode minimal 3 karakter").toUpperCase().optional().or(z.literal("")),
+  code: z
+    .string()
+    .min(3, "Kode minimal 3 karakter")
+    .toUpperCase()
+    .optional()
+    .or(z.literal("")),
   type: z.enum(["PERCENTAGE", "FIXED"]),
   value: z.number().min(1, "Nilai minimal 1"),
   max_discount: z.number().optional().nullable(),

@@ -1,6 +1,6 @@
 "use server";
 
-import { PaymentMethod } from "@/generated/prisma";
+import { PaymentMethod } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export async function getShopPayments(shop_id: string) {

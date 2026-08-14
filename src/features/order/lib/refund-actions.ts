@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/config/auth";
-import { RefundStatus } from "@/generated/prisma";
+import { RefundStatus } from "@prisma/client";
 
 export async function updateRefundStatus(
   id: string,

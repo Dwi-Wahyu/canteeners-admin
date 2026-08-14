@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { CreateShopInput } from "./shop-types";
-import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function createShop(payload: CreateShopInput) {
   try {

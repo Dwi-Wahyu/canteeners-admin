@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Edit, Trash2, ExternalLink } from "lucide-react";
 import { getImageUrl } from "@/helper/get-image-url";
-import { Banner } from "@/generated/prisma";
+import { Banner } from "@prisma/client";
 
 export default function BannerCard({ banner }: { banner: Banner }) {
   const handleDelete = async () => {

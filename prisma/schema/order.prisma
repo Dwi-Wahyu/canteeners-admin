@@ -62,7 +62,7 @@ model OrderDiscount {
   discount_id String?
 
   name   String // Snapshot nama diskon/promo
-  amount Float  // Nominal potongan yang diberikan
+  amount Float // Nominal potongan yang diberikan
 
   @@index([order_id])
   @@index([discount_id])

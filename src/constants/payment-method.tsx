@@ -1,4 +1,4 @@
-import { PaymentMethod } from "@/generated/prisma";
+import { PaymentMethod } from "@prisma/client";
 import { Coins, CreditCard, QrCode } from "lucide-react";
 
 export const paymentMethodMapping = {

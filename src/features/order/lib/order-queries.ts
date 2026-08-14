@@ -1,6 +1,6 @@
 "use server";
 
-import { OrderStatus, PaymentMethod, Prisma } from "@/generated/prisma";
+import { OrderStatus, PaymentMethod, Prisma } from "@prisma/client";
 import { OrderSearchParamsInput } from "../types/order-search-params";
 import { prisma } from "@/lib/prisma";
 

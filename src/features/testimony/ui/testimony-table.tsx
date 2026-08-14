@@ -19,7 +19,7 @@ import {
   SortableContent,
   SortableItem,
 } from "@/components/ui/sortable";
-import { AppTestimony } from "@/generated/prisma";
+import { AppTestimony } from "@prisma/client";
 import { createTestimonyColumns } from "./testimony-columns";
 import { updateTestimonyOrder } from "../lib/testimony-actions";
 import { toast } from "sonner";
@@ -40,7 +40,7 @@ export function TestimonyTable({ initialData }: TestimonyTableProps) {
 
   const columns = React.useMemo(
     () => createTestimonyColumns(isDeleting, setIsDeleting),
-    [isDeleting]
+    [isDeleting],
   );
 
   const table = useReactTable({
@@ -54,11 +54,13 @@ export function TestimonyTable({ initialData }: TestimonyTableProps) {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const oldIndex = data.findIndex((item) => item.id.toString() === active.id);
+      const oldIndex = data.findIndex(
+        (item) => item.id.toString() === active.id,
+      );
       const newIndex = data.findIndex((item) => item.id.toString() === over.id);
 
       const newData = arrayMove(data, oldIndex, newIndex);
-      
+
       // Update order field based on new index
       const updatedData = newData.map((item, index) => ({
         ...item,
@@ -69,7 +71,7 @@ export function TestimonyTable({ initialData }: TestimonyTableProps) {
       setIsUpdating(true);
 
       const res = await updateTestimonyOrder(
-        updatedData.map((item) => ({ id: item.id, order: item.order }))
+        updatedData.map((item) => ({ id: item.id, order: item.order })),
       );
 
       if (!res.success) {
@@ -98,7 +100,7 @@ export function TestimonyTable({ initialData }: TestimonyTableProps) {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -112,13 +114,15 @@ export function TestimonyTable({ initialData }: TestimonyTableProps) {
                   <SortableItem key={row.id} value={row.id} asChild>
                     <TableRow
                       data-state={row.getIsSelected() && "selected"}
-                      className={isUpdating ? "opacity-50 pointer-events-none" : ""}
+                      className={
+                        isUpdating ? "opacity-50 pointer-events-none" : ""
+                      }
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </TableCell>
                       ))}

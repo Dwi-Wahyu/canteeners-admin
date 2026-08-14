@@ -1,4 +1,4 @@
-import { RefundDisbursementMode } from "@/generated/prisma";
+import { RefundDisbursementMode } from "@prisma/client";
 import { z } from "zod";
 
 export const PaymentMethodEnum = z.enum(["QRIS", "BANK_TRANSFER", "CASH"]);

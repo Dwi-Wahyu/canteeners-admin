@@ -1,6 +1,6 @@
 "use server";
 
-import { ReportStatus } from "@/generated/prisma";
+import { ReportStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 

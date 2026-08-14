@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { Role } from "@/generated/prisma";
+import { Role } from "@prisma/client";
 
 export async function seedCustomers() {
   console.log("Memulai seeding customers...");

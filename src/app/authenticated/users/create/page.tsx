@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Role } from "@/generated/prisma";
+import { Role } from "@prisma/client";
 import { createUser } from "@/features/users/lib/user-action";
 import { toast } from "sonner";
 import { userRoleMapping } from "@/features/users/constants";

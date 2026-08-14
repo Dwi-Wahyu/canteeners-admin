@@ -22,13 +22,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CreateDiscountInput, CreateDiscountSchema } from "../lib/discount-types";
+import {
+  CreateDiscountInput,
+  CreateDiscountSchema,
+} from "../lib/discount-types";
 import { createDiscount, updateDiscount } from "../lib/discount-actions";
 import SubmitButton from "@/components/submit-button";
 import NavButton from "@/components/nav-button";
 import { useRouter } from "next/navigation";
 
-import { Discount } from "@/generated/prisma";
+import { Discount } from "@prisma/client";
 
 interface DiscountFormProps {
   initialData?: Discount;
@@ -41,31 +44,33 @@ export function DiscountForm({ initialData }: DiscountFormProps) {
 
   const form = useForm<CreateDiscountInput>({
     resolver: zodResolver(CreateDiscountSchema),
-    defaultValues: initialData ? {
-        name: initialData.name,
-        description: initialData.description || "",
-        code: initialData.code || "",
-        type: initialData.type,
-        value: initialData.value,
-        max_discount: initialData.max_discount,
-        min_purchase: initialData.min_purchase,
-    } : {
-      name: "",
-      description: "",
-      code: "",
-      type: "FIXED",
-      value: 0,
-      max_discount: null,
-      min_purchase: 0,
-    },
+    defaultValues: initialData
+      ? {
+          name: initialData.name,
+          description: initialData.description || "",
+          code: initialData.code || "",
+          type: initialData.type,
+          value: initialData.value,
+          max_discount: initialData.max_discount,
+          min_purchase: initialData.min_purchase,
+        }
+      : {
+          name: "",
+          description: "",
+          code: "",
+          type: "FIXED",
+          value: 0,
+          max_discount: null,
+          min_purchase: 0,
+        },
   });
 
   async function onSubmit(data: CreateDiscountInput) {
     setIsLoading(true);
-    
-    const result = isEdit 
-        ? await updateDiscount(initialData.id, data)
-        : await createDiscount(data);
+
+    const result = isEdit
+      ? await updateDiscount(initialData.id, data)
+      : await createDiscount(data);
 
     if (result.success) {
       toast.success(result.message);
@@ -82,7 +87,9 @@ export function DiscountForm({ initialData }: DiscountFormProps) {
         <CardHeader>
           <CardTitle>{isEdit ? "Edit Voucher" : "Buat Voucher Baru"}</CardTitle>
           <CardDescription>
-            {isEdit ? "Perbarui detail voucher." : "Isi detail voucher yang akan dibuat."}
+            {isEdit
+              ? "Perbarui detail voucher."
+              : "Isi detail voucher yang akan dibuat."}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -115,7 +122,9 @@ export function DiscountForm({ initialData }: DiscountFormProps) {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="code">Kode Voucher (Opsional)</FieldLabel>
+                    <FieldLabel htmlFor="code">
+                      Kode Voucher (Opsional)
+                    </FieldLabel>
                     <Input
                       {...field}
                       value={field.value || ""}
@@ -141,8 +150,12 @@ export function DiscountForm({ initialData }: DiscountFormProps) {
                         <SelectValue placeholder="Pilih Tipe" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="FIXED">Fixed (Nominal Rupiah)</SelectItem>
-                        <SelectItem value="PERCENTAGE">Persentase (%)</SelectItem>
+                        <SelectItem value="FIXED">
+                          Fixed (Nominal Rupiah)
+                        </SelectItem>
+                        <SelectItem value="PERCENTAGE">
+                          Persentase (%)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     {fieldState.error?.message && (
@@ -176,7 +189,9 @@ export function DiscountForm({ initialData }: DiscountFormProps) {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="min_purchase">Minimal Belanja</FieldLabel>
+                    <FieldLabel htmlFor="min_purchase">
+                      Minimal Belanja
+                    </FieldLabel>
                     <Input
                       type="number"
                       id="min_purchase"
@@ -196,7 +211,9 @@ export function DiscountForm({ initialData }: DiscountFormProps) {
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="max_discount">Maksimal Potongan</FieldLabel>
+                      <FieldLabel htmlFor="max_discount">
+                        Maksimal Potongan
+                      </FieldLabel>
                       <Input
                         type="number"
                         id="max_discount"

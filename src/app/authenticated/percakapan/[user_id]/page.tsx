@@ -62,7 +62,11 @@ export default async function UserConversationPage({
                         </h3>
                         <span className="text-[10px] text-muted-foreground">
                           {formatDistanceToNow(
-                            new Date(chat.lastMessageAt.toDate()),
+                            new Date(
+                              chat.last_message_at ||
+                                chat.lastMessageAt ||
+                                Date.now()
+                            ),
                             {
                               addSuffix: true,
                               locale: id,

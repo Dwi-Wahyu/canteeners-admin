@@ -1,56 +1,55 @@
-import { Timestamp } from "firebase/firestore";
-
-/**
- * Tipe pesan terakhir untuk mengidentifikasi konten yang ditampilkan di daftar chat
- */
 export type MessageType = "TEXT" | "ORDER" | "ATTACHMENT";
 
-/**
- * Role partisipan sesuai dengan konteks sistem kamu
- */
 export type ChatUserRole = "ADMIN";
 
-/**
- * Informasi detail setiap pengguna di dalam percakapan
- */
 export interface ParticipantInfo {
   name: string;
   avatar: string;
   role: "CUSTOMER" | "SHOP_OWNER";
 }
 
-/**
- * Struktur utama untuk satu percakapan (Conversation)
- */
 export interface Conversation {
-  id: string; // Format: {buyerId}_{sellerId}
-  participantIds: string[];
+  id: string;
+  participantIds?: string[];
+  lastMessage?: string;
+  last_message?: string;
+  lastMessageType?: MessageType;
+  last_message_type?: MessageType;
+  lastMessageAt?: string | Date | number;
+  last_message_at?: string | Date | number;
+  lastMessageSenderId?: string;
+  last_message_sender_id?: string;
+  participantsInfo?: Record<string, ParticipantInfo>;
+  unreadCounts?: Record<string, number>;
+  unread_counts?: Record<string, number>;
+  lastSeenAt?: Record<string, string | Date | number>;
+  typing?: Record<string, boolean>;
+  createdAt?: string | Date | number;
+  created_at?: string | Date | number;
+  updatedAt?: string | Date | number;
+  updated_at?: string | Date | number;
 
-  // Informasi Pesan Terakhir
-  lastMessage: string;
-  lastMessageType: MessageType;
-  lastMessageAt: Timestamp;
-  lastMessageSenderId: string;
+  customer?: {
+    id: string;
+    user_id: string;
+    user: {
+      name: string;
+      avatar: string;
+    };
+  };
 
-  /**
-   * Data dinamis menggunakan ID pengguna sebagai kunci (Record)
-   */
-
-  // Info profil singkat untuk efisiensi fetch (denormalized)
-  participantsInfo: Record<string, ParticipantInfo>;
-
-  // Jumlah pesan yang belum dibaca per user
-  unreadCounts: Record<string, number>;
-
-  // Waktu terakhir user melihat room ini
-  lastSeenAt: Record<string, Timestamp>;
-
-  // Status mengetik (real-time)
-  typing: Record<string, boolean>;
-
-  // Metadata
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  owner?: {
+    id: string;
+    user_id: string;
+    shop?: {
+      id: string;
+      name: string;
+    };
+    user: {
+      name: string;
+      avatar: string;
+    };
+  };
 }
 
 export type Attachment = {
@@ -62,11 +61,15 @@ export type Attachment = {
 
 export type Message = {
   id: string;
-  senderId: string;
+  chat_id?: string;
+  sender_id?: string;
+  senderId?: string;
   type: "TEXT" | "ORDER" | "ATTACHMENT";
   order_id?: string;
-  text?: string;
+  text?: string | null;
   attachments?: Attachment[];
-  readBy: string[];
-  createdAt: Timestamp | null;
+  read_by?: string[];
+  readBy?: string[];
+  created_at?: string | Date | number | null;
+  createdAt?: string | Date | number | null;
 };

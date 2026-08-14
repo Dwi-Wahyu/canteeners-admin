@@ -26,16 +26,16 @@ model Refund {
 }
 
 model RefundHistory {
-  id        String   @id @default(uuid())
+  id        String @id @default(uuid())
   refund_id String
-  refund    Refund   @relation(fields: [refund_id], references: [id], onDelete: Cascade)
+  refund    Refund @relation(fields: [refund_id], references: [id], onDelete: Cascade)
 
   status RefundStatus
   note   String?      @db.Text
 
   actor_id   String? // ID User (Admin/Shop) yang melakukan aksi
   actor_name String? // Nama User saat aksi dilakukan (untuk snapshot)
-  actor_role Role?   // Role User saat aksi dilakukan
+  actor_role Role? // Role User saat aksi dilakukan
 
   created_at DateTime @default(now())
 

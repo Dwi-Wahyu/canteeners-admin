@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { UserSearchParamsInput } from "../types/user-search-params";
-import { Prisma, Role } from "@/generated/prisma";
+import { Prisma, Role } from "@prisma/client";
 
 export async function getUsers() {
   return await prisma.user.findMany();
@@ -22,7 +22,7 @@ export async function getShopOwners() {
 
 export default async function getUsersDataByRole(
   searchParams: UserSearchParamsInput,
-  role: Role
+  role: Role,
 ) {
   type WhereClause = Prisma.UserWhereInput;
   let whereClause: WhereClause = {

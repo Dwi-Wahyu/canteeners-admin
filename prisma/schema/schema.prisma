@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../src/generated/prisma"
 }
 
 datasource db {
@@ -54,10 +53,10 @@ model Faq {
 }
 
 model Banner {
-  id        Int      @id @default(autoincrement())
-  order     Int      @default(0)
-  file      String
-  cta_path  String?
+  id         Int      @id @default(autoincrement())
+  order      Int      @default(0)
+  file       String
+  cta_path   String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

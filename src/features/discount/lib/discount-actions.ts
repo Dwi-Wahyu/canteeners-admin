@@ -2,10 +2,13 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { DiscountStatus } from "@/generated/prisma";
+import { DiscountStatus } from "@prisma/client";
 import { CreateDiscountInput } from "./discount-types";
 
-export async function assignVoucherToCustomers(discountId: string, customerIds: string[]) {
+export async function assignVoucherToCustomers(
+  discountId: string,
+  customerIds: string[],
+) {
   try {
     const data = customerIds.map((customerId) => ({
       discount_id: discountId,
@@ -17,7 +20,10 @@ export async function assignVoucherToCustomers(discountId: string, customerIds: 
     });
 
     revalidatePath("/authenticated/voucher");
-    return { success: true, message: "Voucher berhasil diberikan ke pelanggan" };
+    return {
+      success: true,
+      message: "Voucher berhasil diberikan ke pelanggan",
+    };
   } catch (error) {
     console.error("Error assigning voucher:", error);
     return { success: false, message: "Gagal memberikan voucher" };
@@ -47,7 +53,10 @@ export async function toggleDiscountStatus(id: string, currentStatus: string) {
     });
 
     revalidatePath("/authenticated/voucher");
-    return { success: true, message: `Discount berhasil ${newStatus === "ACTIVE" ? "diaktifkan" : "dinonaktifkan"}` };
+    return {
+      success: true,
+      message: `Discount berhasil ${newStatus === "ACTIVE" ? "diaktifkan" : "dinonaktifkan"}`,
+    };
   } catch (error) {
     console.error("Error toggling discount status:", error);
     return { success: false, message: "Gagal mengubah status discount" };
@@ -95,8 +104,13 @@ export async function revokeVoucherFromCustomer(customerDiscountId: string) {
       },
     });
 
-    revalidatePath(`/authenticated/voucher/${customerDiscount.discount_id}/owners`);
-    return { success: true, message: "Voucher berhasil dicabut dari pelanggan" };
+    revalidatePath(
+      `/authenticated/voucher/${customerDiscount.discount_id}/owners`,
+    );
+    return {
+      success: true,
+      message: "Voucher berhasil dicabut dari pelanggan",
+    };
   } catch (error) {
     console.error("Error revoking voucher:", error);
     return { success: false, message: "Gagal mencabut voucher" };

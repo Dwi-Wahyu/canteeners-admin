@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { CheckCircle2 } from "lucide-react"; // Icon centang untuk sukses
 import { format } from "date-fns";
-import { ShopBilling } from "@/generated/prisma";
+import { ShopBilling } from "@prisma/client";
 
 export default function PaidBillingDialog({
   billing,

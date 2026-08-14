@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Trash2, GripVertical } from "lucide-react";
 import { toast } from "sonner";
 import { deleteAppTestimony } from "../lib/testimony-actions";
-import { AppTestimony } from "@/generated/prisma";
+import { AppTestimony } from "@prisma/client";
 import { Star } from "lucide-react";
 
 export const createTestimonyColumns = (
   isDeleting: boolean,
-  setIsDeleting: (v: boolean) => void
+  setIsDeleting: (v: boolean) => void,
 ): ColumnDef<AppTestimony>[] => [
   {
     id: "drag-handle",
@@ -47,7 +47,8 @@ export const createTestimonyColumns = (
     header: "Rating",
     cell: ({ row }) => (
       <div className="flex items-center gap-1">
-        {row.original.rating} <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+        {row.original.rating}{" "}
+        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
       </div>
     ),
   },
@@ -58,8 +59,9 @@ export const createTestimonyColumns = (
       const testimony = row.original;
 
       const handleDelete = async () => {
-        if (!confirm("Apakah Anda yakin ingin menghapus testimoni ini?")) return;
-        
+        if (!confirm("Apakah Anda yakin ingin menghapus testimoni ini?"))
+          return;
+
         setIsDeleting(true);
         const res = await deleteAppTestimony(testimony.id);
         if (res.success) {

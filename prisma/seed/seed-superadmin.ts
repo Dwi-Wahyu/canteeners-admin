@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
-import { Role } from "@/generated/prisma";
+import { Role } from "@prisma/client";
 import { config } from "dotenv";
 import { prisma } from "@/lib/prisma";
 
 config();
 
-const DEFAULT_AVATAR = "default-avatar.jpg";
+const DEFAULT_AVATAR = "avatars/default-avatar.jpg";
 
 export async function seedSuperAdmin() {
   console.log("Memulai seeding Super Admin...");
@@ -21,13 +21,21 @@ export async function seedSuperAdmin() {
   }
 
   try {
+    // ✅ CEK APAKAH ROLE SUPERADMIN ADA
+    console.log("🔍 Mengecek Role SUPERADMIN...");
+    console.log("Role values:", Object.values(Role));
+
     const hashedPassword = await bcrypt.hash(superadminPassword, 10);
 
-    await prisma.user.upsert({
+    console.log("📝 Mencoba upsert user...");
+
+    // 🔥 PERBAIKAN: Hapus relasi admin sementara
+    const result = await prisma.user.upsert({
       where: { username: superadminUsername },
       update: {
         password: hashedPassword,
         role: Role.SUPERADMIN,
+        updated_at: new Date(),
       },
       create: {
         name: "Super Admin",
@@ -41,9 +49,15 @@ export async function seedSuperAdmin() {
       },
     });
 
-    console.log(`Super Admin '${superadminUsername}' berhasil di-seed.`);
-  } catch (error) {
-    console.error("Gagal melakukan seeding Super Admin:", error);
+    console.log(`✅ Super Admin '${superadminUsername}' berhasil di-seed.`);
+    console.log("User ID:", result.id);
+  } catch (error: any) {
+    console.error("❌ Gagal melakukan seeding Super Admin:");
+    console.error("Message:", error.message);
+    console.error("Code:", error.code);
+    console.error("Meta:", error.meta);
+    console.error("Stack:", error.stack);
+    throw error;
   }
 }
 

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { TableQRCode } from "@/generated/prisma";
+import { TableQRCode } from "@prisma/client";
 import { getImageUrl } from "@/helper/get-image-url";
 import { Download, Trash2, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -67,7 +67,11 @@ export default function QRCodeMejaCard({ data }: { data: TableQRCode }) {
 
             <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
               <AlertDialogTrigger asChild>
-                <Button variant={"destructive"} size={"icon"} disabled={isPending}>
+                <Button
+                  variant={"destructive"}
+                  size={"icon"}
+                  disabled={isPending}
+                >
                   {isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
@@ -79,17 +83,22 @@ export default function QRCodeMejaCard({ data }: { data: TableQRCode }) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Hapus QR Code?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Tindakan ini akan menghapus QR Code Meja {data.table_number} secara permanen dari sistem dan penyimpanan.
+                    Tindakan ini akan menghapus QR Code Meja {data.table_number}{" "}
+                    secara permanen dari sistem dan penyimpanan.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
+                  <AlertDialogCancel disabled={isPending}>
+                    Batal
+                  </AlertDialogCancel>
                   <Button
                     variant="destructive"
                     onClick={handleDelete}
                     disabled={isPending}
                   >
-                    {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isPending && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Hapus
                   </Button>
                 </AlertDialogFooter>

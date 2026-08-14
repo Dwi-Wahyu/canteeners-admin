@@ -1,6 +1,6 @@
 "use server";
 
-import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 import { errorResponse, successResponse } from "@/helper/action-helpers";
 import { prisma } from "@/lib/prisma";
 import { LocalStorageService } from "@/services/storage";

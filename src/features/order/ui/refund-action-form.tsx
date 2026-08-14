@@ -24,7 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { RefundStatus } from "@/generated/prisma";
+import { RefundStatus } from "@prisma/client";
 
 interface RefundActionFormProps {
   refundId: string;

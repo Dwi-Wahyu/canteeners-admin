@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 import { EventSlotSearchParamsInput } from "../types/event-slot-search-params";
 
 export async function getEvents() {
@@ -23,7 +23,10 @@ export async function getEventById(id: number) {
   });
 }
 
-export async function getEventSlots(eventId: number, searchParams: EventSlotSearchParamsInput) {
+export async function getEventSlots(
+  eventId: number,
+  searchParams: EventSlotSearchParamsInput,
+) {
   const where: Prisma.EventSlotWhereInput = {
     event_id: eventId,
   };

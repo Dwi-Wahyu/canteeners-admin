@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { Loader, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { ShopBilling } from "@/generated/prisma";
+import { ShopBilling } from "@prisma/client";
 
 export default function DeleteBillingDialog({
   billing,
