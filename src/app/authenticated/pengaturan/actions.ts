@@ -15,7 +15,9 @@ export async function updateGlobalSetting(key: string, value: string) {
 
     // 2. Update Redis Cache immediately so main app and worker get instant updates
     const redis = await orderQueue.client;
-    await redis.set(`setting:${key}`, value);
+    if (redis && typeof redis.set === "function") {
+      await redis.set(`setting:${key}`, value);
+    }
 
     revalidatePath("/authenticated/pengaturan");
     return { success: true };

@@ -96,6 +96,10 @@ export const adminMenu = {
           title: "Komplain",
           url: "/authenticated/komplain",
         },
+        {
+          title: "Pelanggaran Mitra",
+          url: "/authenticated/pelanggaran-mitra",
+        },
       ],
     },
   ],
@@ -161,7 +165,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const filteredNavMain = adminMenu.navMain.filter((item) => {
     if (role === "SUPERADMIN") return true;
     if (role === "ADMIN") {
-      return !["Kantin", "Kedai", "Testimoni"].includes(item.title);
+      return !["Kantin", "Kategori", "Banner", "Testimoni", "Voucher", "Event"].includes(item.title);
     }
     return false;
   });
