@@ -9,9 +9,8 @@ export async function seedShops() {
 
   const ownerPassword = process.env.OWNER_PASSWORD;
   const ownerUsername = process.env.OWNER_USERNAME;
-  const ownerFirebaseUid = process.env.OWNER_FIREBASE_UID;
 
-  if (!ownerPassword || !ownerUsername || !ownerFirebaseUid) {
+  if (!ownerPassword || !ownerUsername) {
     console.error(
       "Variabel lingkungan owner tidak ditemukan. Seeding shop dibatalkan.",
     );
@@ -29,7 +28,6 @@ export async function seedShops() {
         role: "SHOP_OWNER",
       },
       create: {
-        id: ownerFirebaseUid,
         name: "Ahmad Subarjo",
         username: ownerUsername,
         password: hashedPassword,
@@ -55,7 +53,8 @@ export async function seedShops() {
                   create: [
                     {
                       name: "Ayam Geprek Sambal Bawang",
-                      description: "Ayam goreng tepung dengan sambal bawang pedas nampol",
+                      description:
+                        "Ayam goreng tepung dengan sambal bawang pedas nampol",
                       image_url: "ayam-geprek.jpg",
                       price: 15000,
                       categories: {
@@ -70,7 +69,8 @@ export async function seedShops() {
                     },
                     {
                       name: "Es Buah Segar",
-                      description: "Campuran buah-buahan segar dengan sirup dan susu",
+                      description:
+                        "Campuran buah-buahan segar dengan sirup dan susu",
                       image_url: "es-buah.jpg",
                       price: 10000,
                       categories: {
@@ -118,10 +118,14 @@ export async function seedShops() {
         },
       });
 
-      console.log(`Payment method CASH untuk '${user.owner.shop.name}' berhasil di-seed.`);
+      console.log(
+        `Payment method CASH untuk '${user.owner.shop.name}' berhasil di-seed.`,
+      );
     }
 
-    console.log(`Owner '${ownerUsername}' dan Shop 'Kedai Subarjo' berhasil di-seed.`);
+    console.log(
+      `Owner '${ownerUsername}' dan Shop 'Kedai Subarjo' berhasil di-seed.`,
+    );
     console.log("Seeding shops selesai.");
   } catch (error) {
     console.error("Gagal melakukan seeding shops:", error);
